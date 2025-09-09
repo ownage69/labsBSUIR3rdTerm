@@ -1,6 +1,7 @@
 ﻿#include "App.h"
 #include "SafeInput.h"
 #include <iostream>
+
 using namespace std;
 
 void App::showMenu() const {
