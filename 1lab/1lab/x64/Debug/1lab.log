@@ -1,0 +1,7 @@
+﻿  App.cpp
+  main.cpp
+  Matrix.cpp
+D:\Labs\3sem\1lab\src\Matrix.cpp(96,21): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  SafeInput.cpp
+  Создание кода...
+  1lab.vcxproj -> D:\Labs\3sem\1lab\x64\Debug\1lab.exe
