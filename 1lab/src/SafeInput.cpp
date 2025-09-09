@@ -57,33 +57,3 @@ int safePositiveInputInt(const string& prompt) {
     }
 }
 
-float safeInputFloat(const string& prompt) {
-    std::regex pat(R"(^[+-]?(\d+(\.\d*)?|\.\d+)$)");
-
-    while (true) {
-        string input = readLineTrimmed(prompt);
-
-        if (!input.empty() && std::regex_match(input, pat)) {
-            try {
-                return std::stof(input);
-            }
-            catch (const std::invalid_argument&) {
-                cout << "Невалидный ввод. Введите число.\n";
-            }
-            catch (const std::out_of_range&) {
-                cout << "Число вне диапазона float. Введите заново.\n";
-            }
-        }
-        else {
-            cout << "Некорректный ввод. Введите вещественное число (можно с + или -).\n";
-        }
-    }
-}
-
-float safePositiveInputFloat(const string& prompt) {
-    while (true) {
-        if (float number = safeInputFloat(prompt); number > 0)
-            return number;
-        cout << "Число должно быть положительным\n";
-    }
-}
