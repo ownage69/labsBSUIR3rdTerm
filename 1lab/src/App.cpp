@@ -50,21 +50,9 @@ void App::subtractMatrices() {
         cout << "Сначала создайте матрицы.\n";
         return;
     }
-    if (!A.isValid() || !B.isValid()) {
-        cout << "Одна из матриц не инициализирована.\n";
-        return;
-    }
-    if (A.getRows() != B.getRows() || A.getCols() != B.getCols()) {
-        cout << "Ошибка: размеры матриц не совпадают.\n";
-        return;
-    }
-    if (A.subtract(B, C)) {
-        cout << "\nРезультат (A - B):\n";
-        C.display();
-    }
-    else {
-        cout << "Ошибка при вычитании матриц.\n";
-    }
+    A.subtract(B, C);
+    cout << "\nРезультат (A - B):\n";
+    C.display();
 }
 
 void App::run() {
