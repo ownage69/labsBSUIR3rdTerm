@@ -1,5 +1,5 @@
 #include "App.h"
-#include <clocale>
+#include <locale>
 
 int main() {
     setlocale(LC_ALL, "Russian");
