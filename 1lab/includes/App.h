@@ -15,6 +15,6 @@ private:
     void subtractMatrices();
 
 public:
-    App() = default;
+    App() = default; 
     void run();
 };
