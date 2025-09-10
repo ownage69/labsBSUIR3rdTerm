@@ -10,7 +10,7 @@ void App::showMenu() const {
     cout << "2. Ввести элементы матриц\n";
     cout << "3. Вывести матрицы A и B\n";
     cout << "4. Вычесть A - B и показать результат\n";
-    cout << "5. Выход\n";
+    cout << "5. Выход.\n";
 }
 
 void App::createMatrices() {
