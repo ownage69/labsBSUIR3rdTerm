@@ -38,9 +38,24 @@ MyArray& MyArray::operator=(const MyArray& other) {
 }
 
 MyArray MyArray::operator+(const MyArray& other) const {
+    if (size + other.size == 0) {
+        return MyArray();
+    }
+
     MyArray res(size + other.size);
-    for (int i = 0; i < size; ++i) res.data[i] = data[i];
-    for (int j = 0; j < other.size; ++j) res.data[size + j] = other.data[j];
+
+    if (size > 0) {
+        for (int i = 0; i < size; ++i) {
+            res.data[i] = data[i];
+        }
+    }
+
+    if (other.size > 0) {
+        for (int j = 0; j < other.size; ++j) {
+            res.data[size + j] = other.data[j];
+        }
+    }
+
     return res;
 }
 
