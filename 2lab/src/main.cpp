@@ -1,5 +1,5 @@
 #include "app.h"
-#include <locale>
+#include <clocale>
 
 int main() {
     setlocale(LC_ALL, "");
