@@ -25,10 +25,10 @@ Array& Array::operator=(const Array& other) {
     return *this;
 }
 
-Array Array::operator+(const Array& other) const {
-    Array result(size + other.size);
-    std::copy(data, data + size, result.data);
-    std::copy(other.data, other.data + other.size, result.data + size);
+Array operator+(const Array& lhs, const Array& rhs) {
+    Array result(lhs.size + rhs.size);
+    std::copy(lhs.data, lhs.data + lhs.size, result.data);
+    std::copy(rhs.data, rhs.data + rhs.size, result.data + lhs.size);
     return result;
 }
 
