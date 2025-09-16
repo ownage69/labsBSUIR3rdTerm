@@ -1,62 +1,105 @@
-#include "App.h"
-#include "Array.h"
+#include "app.h"
 #include <iostream>
-#include <limits>
-#include <locale.h>
+#include <cctype>  // для isspace и isdigit
 
-using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
 
-void App::run() {
-    setlocale(LC_ALL, "Russian");
+inline void trim_inplace(string& s) {
+    while (!s.empty() && isspace(static_cast<unsigned char>(s.front())))
+        s.erase(s.begin());
+    while (!s.empty() && isspace(static_cast<unsigned char>(s.back())))
+        s.pop_back();
+}
 
-    MyArray a, b, c;
-    int choice = 0;
+void createArray(Array& arr, const string& name) {
+    cout << "Создание массива '" << name << "'.\n";
+    int size = safePositiveInputInt("Введите размер массива: ");
+    arr = Array(size);  // Используем operator= для resize
+    for (size_t i = 0; i < arr.getSize(); ++i) {
+        string prompt = "Введите элемент " + std::to_string(i + 1) + " для " + name + ": ";
+        arr[i] = safeInputInt(prompt);
+    }
+    cout << "Массив '" << name << "' создан.\n";
+}
 
-    do {
-        cout << "\n===== МЕНЮ =====\n";
-        cout << "1. Ввести первый массив\n";
-        cout << "2. Ввести второй массив\n";
-        cout << "3. Показать массивы\n";
-        cout << "4. Объединить массивы (c = a + b)\n";
-        cout << "5. Показать результат объединения\n";
-        cout << "6. Очистить результат объединения\n";
-        cout << "7. Выход\n";
-        cout << "Ваш выбор: ";
+void printArray(const Array& arr, const string& name) {
+    if (arr.getSize() == 0) {
+        cout << "Массив '" << name << "' пуст.\n";
+        return;
+    }
+    cout << "Массив '" << name << "': ";
+    for (size_t i = 0; i < arr.getSize(); ++i) {
+        cout << arr[i];
+        if (i < arr.getSize() - 1) cout << " ";
+    }
+    cout << endl;
+}
 
-        if (!(cin >> choice)) {
-            cout << "Неверный ввод. Повторите.\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+void concatenateArrays(const Array& a, const Array& b) {
+    if (a.getSize() == 0 && b.getSize() == 0) {
+        cout << "Оба массива пусты. Нет чего объединять.\n";
+        return;
+    }
+    Array result = a + b;
+    cout << "Результат объединения массивов A и B: ";
+    for (size_t i = 0; i < result.getSize(); ++i) {
+        cout << result[i];
+        if (i < result.getSize() - 1) cout << " ";
+    }
+    cout << endl;
+}
+
+void showMenu() {
+    Array arr1, arr2;
+
+    while (true) {
+        cout << "\n=== Меню ===\n";
+        cout << "1. Создать первый массив (A)\n";
+        cout << "2. Создать второй массив (B)\n";
+        cout << "3. Вывести массив A\n";
+        cout << "4. Вывести массив B\n";
+        cout << "5. Объединить A и B\n";
+        cout << "6. Выход\n";
+        cout << "Выберите опцию: ";
+
+        string input;
+        getline(cin, input);
+        trim_inplace(input);  // Обрезка пробелов
+        if (input.empty()) {
+            cout << "Пожалуйста, введите номер опции.\n";
+            continue;
+        }
+        if (input.length() != 1 || !isdigit(static_cast<unsigned char>(input[0])) ||
+            input[0] < '1' || input[0] > '6') {
+            cout << "Неверный выбор. Попробуйте снова.\n";
             continue;
         }
 
+        char choice = input[0];
         switch (choice) {
-        case 1:
-            cin >> a;
+        case '1':
+            createArray(arr1, "A");
             break;
-        case 2:
-            cin >> b;
+        case '2':
+            createArray(arr2, "B");
             break;
-        case 3:
-            cout << "Первый массив:  " << a << "\n";
-            cout << "Второй массив:  " << b << "\n";
+        case '3':
+            printArray(arr1, "A");
             break;
-        case 4:
-            c = a + b;
-            cout << "Объединение выполнено.\n";
+        case '4':
+            printArray(arr2, "B");
             break;
-        case 5:
-            cout << "Результат (c): " << c << "\n";
+        case '5':
+            concatenateArrays(arr1, arr2);
             break;
-        case 6:
-            c = MyArray(); // очищаем результат
-            cout << "Результат очищен.\n";
-            break;
-        case 7:
-            cout << "Выход...\n";
-            break;
+        case '6':
+            cout << "Выход из программы.\n";
+            return;
         default:
-            cout << "Некорректный выбор. Введите число от 1 до 7.\n";
+            cout << "Неверный выбор. Попробуйте снова.\n";
         }
-    } while (choice != 7);
+    }
 }
