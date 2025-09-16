@@ -1,10 +1,8 @@
-#include "App.h"
-#include <locale.h>
+#include "app.h"
+#include <locale>
 
 int main() {
-    setlocale(LC_ALL, "Russian");
-
-    App app;
-    app.run();
+    setlocale(LC_ALL, "");
+    showMenu();
     return 0;
 }

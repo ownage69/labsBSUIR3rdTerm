@@ -1,23 +1,24 @@
 #pragma once
+
 #include <iostream>
+#include <cstddef>
+#include <algorithm>
 
-using namespace std;
-
-class MyArray {
+class Array {
 private:
     int* data;
-    int size;
+    size_t size;
 
 public:
-    MyArray(int s = 0);                    
-    MyArray(const MyArray& other);         
-    ~MyArray();                         
+    Array(size_t s = 0);
+    ~Array();
+    Array(const Array& other);
+    Array& operator=(const Array& other);
+    Array operator+(const Array& other) const;
+    int& operator[](size_t index);
+    const int& operator[](size_t index) const;
+    size_t getSize() const { return size; }
 
-    MyArray& operator=(const MyArray& other);   
-    MyArray operator+(const MyArray& other) const; 
-
-    int getSize() const { return size; }
-
-    friend istream& operator>>(istream& in, MyArray& arr);
-    friend ostream& operator<<(ostream& out, const MyArray& arr);
+    friend std::ostream& operator<<(std::ostream& os, const Array& arr);
+    friend std::istream& operator>>(std::istream& is, Array& arr);
 };

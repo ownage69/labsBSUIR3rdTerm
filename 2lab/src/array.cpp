@@ -1,96 +1,66 @@
-#include "Array.h"
-#include <limits>
+#include "array.h"
 
-MyArray::MyArray(int s) : data(nullptr), size(0) {
-    if (s > 0) {
-        size = s;
-        data = new int[size];
-        for (int i = 0; i < size; ++i) data[i] = 0;
-    }
+Array::Array(size_t s) : size(s), data(s ? new int[s] : nullptr) {
 }
 
-MyArray::MyArray(const MyArray& other) : data(nullptr), size(0) {
-    if (other.size > 0) {
-        size = other.size;
-        data = new int[size];
-        for (int i = 0; i < size; ++i) data[i] = other.data[i];
-    }
-}
-
-MyArray::~MyArray() {
+Array::~Array() {
     delete[] data;
 }
 
-MyArray& MyArray::operator=(const MyArray& other) {
-    if (this == &other) return *this; 
+Array::Array(const Array& other) : size(other.size), data(other.size ? new int[other.size] : nullptr) {
+    if (data) {
+        std::copy(other.data, other.data + size, data);
+    }
+}
 
-    delete[] data;
-    data = nullptr;
-    size = 0;
-
-    if (other.size > 0) {
+Array& Array::operator=(const Array& other) {
+    if (this != &other) {
+        delete[] data;
         size = other.size;
-        data = new int[size];
-        for (int i = 0; i < size; ++i) data[i] = other.data[i];
-    }
-
-    return *this; 
-}
-
-MyArray MyArray::operator+(const MyArray& other) const {
-    if (size + other.size == 0) {
-        return MyArray();
-    }
-
-    MyArray res(size + other.size);
-
-    if (size > 0) {
-        for (int i = 0; i < size; ++i) {
-            res.data[i] = data[i];
+        data = other.size ? new int[other.size] : nullptr;
+        if (data) {
+            std::copy(other.data, other.data + size, data);
         }
     }
-
-    if (other.size > 0) {
-        for (int j = 0; j < other.size; ++j) {
-            res.data[size + j] = other.data[j];
-        }
-    }
-
-    return res;
+    return *this;
 }
 
-istream& operator>>(istream& in, MyArray& arr) {
-    int s;
-    cout << "Введите количество элементов массива (целое >= 0): ";
-    while (!(in >> s) || s < 0) {
-        cout << "Неверный ввод. Введите неотрицательное целое: ";
-        in.clear();
-        in.ignore(numeric_limits<streamsize>::max(), '\n');
+Array Array::operator+(const Array& other) const {
+    Array result(size + other.size);
+    std::copy(data, data + size, result.data);
+    std::copy(other.data, other.data + other.size, result.data + size);
+    return result;
+}
+
+int& Array::operator[](size_t index) {
+    return data[index];
+}
+
+const int& Array::operator[](size_t index) const {
+    return data[index];
+}
+
+std::ostream& operator<<(std::ostream& os, const Array& arr) {
+    os << arr.size << ": ";
+    for (size_t i = 0; i < arr.size; ++i) {
+        os << arr.data[i];
+        if (i < arr.size - 1) os << " ";
     }
+    os << std::endl;
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, Array& arr) {
+    size_t newSize;
+    is >> newSize;
+    if (is.fail()) return is;
 
     delete[] arr.data;
-    arr.size = s;
-    arr.data = (arr.size > 0) ? new int[arr.size] : nullptr;
+    arr.size = newSize;
+    arr.data = newSize ? new int[newSize] : nullptr;
 
-    for (int i = 0; i < arr.size; ++i) {
-        cout << "Элемент [" << i << "]: ";
-        while (!(in >> arr.data[i])) {
-            cout << "Неверный ввод. Введите целое для элемента [" << i << "]: ";
-            in.clear();
-            in.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
+    for (size_t i = 0; i < newSize; ++i) {
+        is >> arr.data[i];
     }
-
-    return in;
-}
-
-
-ostream& operator<<(ostream& out, const MyArray& arr) {
-    out << "[";
-    for (int i = 0; i < arr.size; ++i) {
-        if (i) out << ", ";
-        out << arr.data[i];
-    }
-    out << "]";
-    return out;
+    return is;
 }
