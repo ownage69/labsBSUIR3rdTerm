@@ -33,7 +33,7 @@ int safeInputInt(const string& prompt) {
                 return std::stoi(input);
             }
             catch (const std::invalid_argument&) {
-                cout << "Невалидный ввод. Введите число.\n";
+                cout << "Некорректный ввод. Введите число.\n";
             }
             catch (const std::out_of_range&) {
                 cout << "Число вне диапазона int. Введите заново.\n";
