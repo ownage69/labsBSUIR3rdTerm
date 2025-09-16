@@ -24,11 +24,3 @@ Array& Array::operator=(const Array& other) {
     }
     return *this;
 }
-
-int& Array::operator[](size_t index) {
-    return data[index];
-}
-
-const int& Array::operator[](size_t index) const {
-    return data[index];
-}
