@@ -16,8 +16,14 @@ public:
     Array(const Array& other);
     Array& operator=(const Array& other);
 
-    int& operator[](size_t index);
-    const int& operator[](size_t index) const;
+    int& operator[](size_t index) {
+        return data[index];
+    }
+
+    const int& operator[](size_t index) const {
+        return data[index];
+    }
+
     size_t getSize() const { return size; }
 
     friend Array operator+(const Array& lhs, const Array& rhs) {
