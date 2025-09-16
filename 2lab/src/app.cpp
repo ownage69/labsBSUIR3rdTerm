@@ -1,6 +1,6 @@
 #include "app.h"
 #include <iostream>
-#include <cctype>  // для isspace и isdigit
+#include <cctype>  
 #include <format>
 
 using std::cout;
