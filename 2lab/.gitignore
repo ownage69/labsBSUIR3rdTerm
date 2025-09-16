@@ -5,7 +5,6 @@
 !src/
 !includes/
 !.gitignore
-!README.md
 
 # Внутри папок тоже разрешить всё
 !src/**
