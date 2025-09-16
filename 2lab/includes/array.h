@@ -3,22 +3,24 @@
 #include <iostream>
 #include <cstddef>
 #include <algorithm>
+#include <format>
 
 class Array {
 private:
-    int* data;
     size_t size;
+    int* data;
 
 public:
-    Array(size_t s = 0);
+    explicit Array(size_t s = 0);
     ~Array();
     Array(const Array& other);
     Array& operator=(const Array& other);
-    Array operator+(const Array& other) const;
+
     int& operator[](size_t index);
     const int& operator[](size_t index) const;
     size_t getSize() const { return size; }
 
+    friend Array operator+(const Array& lhs, const Array& rhs);
     friend std::ostream& operator<<(std::ostream& os, const Array& arr);
     friend std::istream& operator>>(std::istream& is, Array& arr);
 };

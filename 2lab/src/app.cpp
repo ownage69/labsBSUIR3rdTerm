@@ -1,6 +1,7 @@
 #include "app.h"
 #include <iostream>
 #include <cctype>  // для isspace и isdigit
+#include <format>
 
 using std::cout;
 using std::cin;
@@ -17,9 +18,9 @@ inline void trim_inplace(string& s) {
 void createArray(Array& arr, const string& name) {
     cout << "Создание массива '" << name << "'.\n";
     int size = safePositiveInputInt("Введите размер массива: ");
-    arr = Array(size);  // Используем operator= для resize
+    arr = Array(size);  
     for (size_t i = 0; i < arr.getSize(); ++i) {
-        string prompt = "Введите элемент " + std::to_string(i + 1) + " для " + name + ": ";
+        string prompt = std::format("Введите элемент {} для {}: ", i + 1, name);
         arr[i] = safeInputInt(prompt);
     }
     cout << "Массив '" << name << "' создан.\n";
@@ -53,7 +54,8 @@ void concatenateArrays(const Array& a, const Array& b) {
 }
 
 void showMenu() {
-    Array arr1, arr2;
+    Array arr1;
+    Array arr2;
 
     while (true) {
         cout << "\n=== Меню ===\n";
@@ -67,7 +69,7 @@ void showMenu() {
 
         string input;
         getline(cin, input);
-        trim_inplace(input);  // Обрезка пробелов
+        trim_inplace(input);  
         if (input.empty()) {
             cout << "Пожалуйста, введите номер опции.\n";
             continue;
