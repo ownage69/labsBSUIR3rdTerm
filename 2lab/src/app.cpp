@@ -1,9 +1,10 @@
 #include "app.h"
 #include "array.h"
-#include "SafeInput.h"
+#include "safeinput.h"
 #include <iostream>
 #include <locale>
 #include <string>
+#include <format>
 
 static void printMenu() {
     std::cout << "\n===МЕНЮ===\n";
@@ -29,7 +30,7 @@ void App::run() {
             int n = safePositiveInputInt("Введите размер массива: ");
             Array tmp(n);
             for (int i = 0; i < n; ++i) {
-                tmp[i] = safeInputInt(std::string("Введите элемент ") + std::to_string(i + 1) + ": ");
+                tmp[i] = safeInputInt(std::format("Введите элемент ") + std::to_string(i + 1) + ": ");
             }
             arr = tmp;
             hasArray = true;
