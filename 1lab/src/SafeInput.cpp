@@ -3,7 +3,6 @@
 #include <string>
 #include <regex>
 #include <cctype>
-#include <stdexcept>
 
 using std::string;
 using std::cout;
