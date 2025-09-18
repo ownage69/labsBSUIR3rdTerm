@@ -1,7 +1,8 @@
 #include "SafeInput.h"
 #include <iostream>
+#include <string>
+#include <regex>
 #include <cctype>
-#include <stdexcept>
 
 using std::string;
 using std::cout;
@@ -24,18 +25,25 @@ string readLineTrimmed(const string& prompt) {
 }
 
 int safeInputInt(const string& prompt) {
+    static const std::regex pat(R"(^[+-]?\d+$)");
+
     while (true) {
         string input = readLineTrimmed(prompt);
 
-        if (!input.empty()) {
+        if (!input.empty() && std::regex_match(input, pat)) {
             try {
-                return std::stoi(input);
+                long val = std::stol(input);
+                if (val < std::numeric_limits<int>::min() || val > std::numeric_limits<int>::max()) {
+                    cout << "Число вне диапазона int. Введите заново.\n";
+                    continue;
+                }
+                return static_cast<int>(val);
             }
             catch (const std::invalid_argument&) {
                 cout << "Некорректный ввод. Введите число.\n";
             }
             catch (const std::out_of_range&) {
-                cout << "Число вне диапазона int. Введите заново.\n";
+                cout << "Число вне допустимого диапазона. Введите заново.\n";
             }
         }
         else {
