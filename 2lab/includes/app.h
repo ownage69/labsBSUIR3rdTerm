@@ -1,7 +1,8 @@
 #pragma once
 
 #include "array.h"
-#include "safeinput.h"
+#include "SafeInput.h"
+#include <string>
 
 void createArray(Array& arr, const std::string& name);
 void printArray(const Array& arr, const std::string& name);

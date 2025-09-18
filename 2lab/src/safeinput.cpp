@@ -1,6 +1,5 @@
-#include "safeinput.h"
+#include "SafeInput.h"
 #include <iostream>
-#include <string>
 #include <cctype>
 #include <stdexcept>
 
@@ -9,7 +8,7 @@ using std::cout;
 using std::cin;
 using std::getline;
 
-inline void trim_inplace(string& s) {
+inline void trimInPlace(string& s) {
     while (!s.empty() && isspace(static_cast<unsigned char>(s.front())))
         s.erase(s.begin());
     while (!s.empty() && isspace(static_cast<unsigned char>(s.back())))
@@ -20,7 +19,7 @@ string readLineTrimmed(const string& prompt) {
     string input;
     cout << prompt;
     getline(cin, input);
-    trim_inplace(input);
+    trimInPlace(input);
     return input;
 }
 

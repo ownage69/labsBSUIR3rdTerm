@@ -1,6 +1,6 @@
 #include "app.h"
 #include <iostream>
-#include <cctype>  
+#include <cctype>
 #include <format>
 
 using std::cout;
@@ -8,17 +8,10 @@ using std::cin;
 using std::endl;
 using std::string;
 
-inline void trim_inplace(string& s) {
-    while (!s.empty() && isspace(static_cast<unsigned char>(s.front())))
-        s.erase(s.begin());
-    while (!s.empty() && isspace(static_cast<unsigned char>(s.back())))
-        s.pop_back();
-}
-
 void createArray(Array& arr, const string& name) {
     cout << "Создание массива '" << name << "'.\n";
     int size = safePositiveInputInt("Введите размер массива: ");
-    arr = Array(size);  
+    arr = Array(static_cast<size_t>(size)); 
     for (size_t i = 0; i < arr.getSize(); ++i) {
         string prompt = std::format("Введите элемент {} для {}: ", i + 1, name);
         arr[i] = safeInputInt(prompt);
@@ -65,11 +58,8 @@ void showMenu() {
         cout << "4. Вывести массив B\n";
         cout << "5. Объединить A и B\n";
         cout << "6. Выход\n";
-        cout << "Выберите опцию: ";
 
-        string input;
-        getline(cin, input);
-        trim_inplace(input);  
+        string input = readLineTrimmed("Выберите опцию: ");
         if (input.empty()) {
             cout << "Пожалуйста, введите номер опции.\n";
             continue;
