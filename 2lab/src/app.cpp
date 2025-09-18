@@ -2,7 +2,7 @@
 #include "array.h"
 #include "SafeInput.h"
 #include <iostream>
-#include <locale.h>
+#include <locale>
 #include <string>
 
 static void printMenu() {
@@ -26,10 +26,10 @@ void App::run() {
             break;
         }
         else if (choice == 1) {
-            int n = safePositiveInputInt("Введите размер массива (положительное число): ");
+            int n = safePositiveInputInt("Введите размер массива: ");
             Array tmp(n);
             for (int i = 0; i < n; ++i) {
-                tmp[i] = safeInputInt(std::string("Введите элемент ") + std::to_string(i) + ": ");
+                tmp[i] = safeInputInt(std::string("Введите элемент ") + std::to_string(i + 1) + ": ");
             }
             arr = tmp;
             hasArray = true;
@@ -50,7 +50,7 @@ void App::run() {
             else {
                 arr = !arr;
                 hasArray = (arr.getSize() > 0);
-                std::cout << "Массив объединён с самим собой: " << arr << "\n";
+                std::cout << "Объединение массивов: " << arr << "\n";
             }
         }
         else {
