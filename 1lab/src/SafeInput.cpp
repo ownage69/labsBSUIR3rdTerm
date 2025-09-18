@@ -10,7 +10,7 @@ using std::cout;
 using std::cin;
 using std::getline;
 
-inline void triminplace(string& s) {
+inline void trimInPlace(string& s) {
     while (!s.empty() && isspace(static_cast<unsigned char>(s.front())))
         s.erase(s.begin());
     while (!s.empty() && isspace(static_cast<unsigned char>(s.back())))
@@ -21,7 +21,7 @@ string readLineTrimmed(const string& prompt) {
     string input;
     cout << prompt;
     getline(cin, input);
-    triminplace(input);
+    trimInPlace(input);
     return input;
 }
 
