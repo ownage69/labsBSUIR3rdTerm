@@ -106,9 +106,6 @@ bool Matrix::subtract(const Matrix& other, Matrix& result) const {
     if (!isValid() || !other.isValid()) {
         return false;
     }
-    if (rows != other.rows || cols != other.cols) {
-        return false;
-    }
     result.create(rows, cols);
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
