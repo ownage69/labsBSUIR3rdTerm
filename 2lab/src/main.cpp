@@ -1,8 +1,7 @@
 #include "app.h"
-#include <clocale>
 
 int main() {
-    setlocale(LC_ALL, "");
-    showMenu();
+    App app;
+    app.run();
     return 0;
 }
