@@ -49,8 +49,8 @@ int safeInputInt(const string& prompt) {
 
 int safePositiveInputInt(const string& prompt) {
     while (true) {
-        int number = safeInputInt(prompt);
-        if (number > 0) return number;
+        if (int number = safeInputInt(prompt); number > 0)
+            return number;
         cout << "Число должно быть положительным\n";
     }
 }
