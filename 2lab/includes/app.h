@@ -12,6 +12,5 @@ private:
     void duplicateArray();
 
 public:
-    App();
     void run();
 };

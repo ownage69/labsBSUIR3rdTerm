@@ -77,4 +77,3 @@ Array Array::operator!() const {
     }
     return result;
 }
-
