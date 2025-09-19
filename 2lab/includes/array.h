@@ -10,7 +10,9 @@ public:
     Array();
     explicit Array(int n);
     Array(const Array& other);
+    Array(Array&& other) noexcept;
     Array& operator=(const Array& other);
+    Array& operator=(Array&& other) noexcept;
     ~Array();
 
     int getSize() const;

@@ -1,19 +1,30 @@
 #include "array.h"
-#include <stdexcept>
+#include <algorithm>
 
 Array::Array() : size(0), data(nullptr) {}
 
 Array::Array(int n) {
-    if (n < 0) throw std::invalid_argument("Size cannot be negative");
-    size = n;
-    data = (n > 0) ? new int[size] {} : nullptr;
+    if (n <= 0) {
+        size = 0;
+        data = nullptr;
+    }
+    else {
+        size = n;
+        data = new int[size];
+        std::fill(data, data + size, 0);
+    }
 }
 
 Array::Array(const Array& other) : size(other.size), data(nullptr) {
     if (size > 0) {
-        data = new int[size];
+        data = new int[size]();
         for (int i = 0; i < size; ++i) data[i] = other.data[i];
     }
+}
+
+Array::Array(Array&& other) noexcept : size(other.size), data(other.data) {
+    other.size = 0;
+    other.data = nullptr;
 }
 
 Array& Array::operator=(const Array& other) {
@@ -22,9 +33,19 @@ Array& Array::operator=(const Array& other) {
     size = other.size;
     data = nullptr;
     if (size > 0) {
-        data = new int[size];
+        data = new int[size]();
         for (int i = 0; i < size; ++i) data[i] = other.data[i];
     }
+    return *this;
+}
+
+Array& Array::operator=(Array&& other) noexcept {
+    if (this == &other) return *this;
+    delete[] data;
+    size = other.size;
+    data = other.data;
+    other.size = 0;
+    other.data = nullptr;
     return *this;
 }
 
@@ -37,12 +58,10 @@ int Array::getSize() const {
 }
 
 int& Array::operator[](int index) {
-    if (index < 0 || index >= size) throw std::out_of_range("Index out of range");
     return data[index];
 }
 
 const int& Array::operator[](int index) const {
-    if (index < 0 || index >= size) throw std::out_of_range("Index out of range");
     return data[index];
 }
 
@@ -69,9 +88,15 @@ std::ostream& operator<<(std::ostream& os, const Array& arr) {
 std::istream& operator>>(std::istream& is, Array& arr) {
     delete[] arr.data;
     is >> arr.size;
-    arr.data = (arr.size > 0) ? new int[arr.size] : nullptr;
-    for (int i = 0; i < arr.size; ++i) {
-        is >> arr.data[i];
+    if (arr.size <= 0) {
+        arr.size = 0;
+        arr.data = nullptr;
+    }
+    else {
+        arr.data = new int[arr.size];
+        for (int i = 0; i < arr.size; ++i) {
+            is >> arr.data[i];
+        }
     }
     return is;
 }
