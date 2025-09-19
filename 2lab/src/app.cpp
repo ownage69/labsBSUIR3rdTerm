@@ -5,8 +5,6 @@
 #include <string>
 #include <format>
 
-App::App() {}
-
 void App::printMenu() const {
     std::cout << "\n===МЕНЮ===\n";
     std::cout << "1. Ввести массив (или перезаписать)\n";
