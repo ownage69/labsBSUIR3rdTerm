@@ -1,5 +1,6 @@
 #include "array.h"
 #include <algorithm>
+#include <stdexcept>
 
 Array::Array() : size(0), data(nullptr) {}
 
@@ -58,10 +59,12 @@ int Array::getSize() const {
 }
 
 int& Array::operator[](int index) {
+    if (index < 0 || index >= size) throw std::out_of_range("Index out of range");
     return data[index];
 }
 
 const int& Array::operator[](int index) const {
+    if (index < 0 || index >= size) throw std::out_of_range("Index out of range");
     return data[index];
 }
 
