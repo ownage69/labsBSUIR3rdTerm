@@ -4,11 +4,11 @@
 class App {
 private:
     Array arr;
-    bool hasArray;
+    bool hasArray = false;
 
-    void printMenu();
+    void printMenu() const;
     void inputArray();
-    void showArray();
+    void showArray() const;
     void duplicateArray();
 
 public:
