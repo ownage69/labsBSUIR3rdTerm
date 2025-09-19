@@ -1,52 +1,35 @@
 #include "array.h"
 #include <stdexcept>
 
-Array::Array() {
-    size = 0;
-    data = nullptr;
-}
+Array::Array() : size(0), data(nullptr) {}
 
 Array::Array(int n) {
     if (n < 0) throw std::invalid_argument("Size cannot be negative");
-    if (n == 0) {
-        size = 0;
-        data = nullptr;
-        return;
-    }
     size = n;
-    data = new int[size];
-    for (int i = 0; i < size; ++i) data[i] = 0;
+    data = (n > 0) ? new int[size] {} : nullptr;
 }
 
-Array::Array(const Array& other) {
-    if (other.size > 0) {
-        size = other.size;
+Array::Array(const Array& other) : size(other.size), data(nullptr) {
+    if (size > 0) {
         data = new int[size];
         for (int i = 0; i < size; ++i) data[i] = other.data[i];
-    }
-    else {
-        size = 0;
-        data = nullptr;
     }
 }
 
 Array& Array::operator=(const Array& other) {
     if (this == &other) return *this;
-    int* new_data = nullptr;
-    if (other.size > 0) {
-        new_data = new int[other.size];
-        for (int i = 0; i < other.size; ++i) new_data[i] = other.data[i];
-    }
     delete[] data;
-    data = new_data;
     size = other.size;
+    data = nullptr;
+    if (size > 0) {
+        data = new int[size];
+        for (int i = 0; i < size; ++i) data[i] = other.data[i];
+    }
     return *this;
 }
 
 Array::~Array() {
     delete[] data;
-    data = nullptr;
-    size = 0;
 }
 
 int Array::getSize() const {
@@ -67,8 +50,8 @@ Array Array::operator!() const {
     if (size == 0) return Array();
     Array result(size * 2);
     for (int i = 0; i < size; ++i) {
-        result.data[i] = data[i];
-        result.data[i + size] = data[i];
+        result[i] = data[i];
+        result[i + size] = data[i];
     }
     return result;
 }
@@ -81,4 +64,14 @@ std::ostream& operator<<(std::ostream& os, const Array& arr) {
         if (i + 1 < arr.size) os << ' ';
     }
     return os;
+}
+
+std::istream& operator>>(std::istream& is, Array& arr) {
+    delete[] arr.data;
+    is >> arr.size;
+    arr.data = (arr.size > 0) ? new int[arr.size] : nullptr;
+    for (int i = 0; i < arr.size; ++i) {
+        is >> arr.data[i];
+    }
+    return is;
 }

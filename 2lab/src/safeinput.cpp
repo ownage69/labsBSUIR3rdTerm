@@ -1,4 +1,4 @@
-#include "SafeInput.h"
+#include "safeinput.h"
 #include <iostream>
 #include <string>
 #include <regex>
@@ -25,25 +25,20 @@ string readLineTrimmed(const string& prompt) {
 }
 
 int safeInputInt(const string& prompt) {
-    static const std::regex pat(R"(^[+-]?\d+$)");
+    std::regex pat(R"(^[+-]?\d+$)");
 
     while (true) {
         string input = readLineTrimmed(prompt);
 
         if (!input.empty() && std::regex_match(input, pat)) {
             try {
-                long val = std::stol(input);
-                if (val < std::numeric_limits<int>::min() || val > std::numeric_limits<int>::max()) {
-                    cout << "Число вне диапазона int. Введите заново.\n";
-                    continue;
-                }
-                return static_cast<int>(val);
+                return std::stoi(input);
             }
             catch (const std::invalid_argument&) {
                 cout << "Некорректный ввод. Введите число.\n";
             }
             catch (const std::out_of_range&) {
-                cout << "Число вне допустимого диапазона. Введите заново.\n";
+                cout << "Число вне диапазона int. Введите заново.\n";
             }
         }
         else {
@@ -54,8 +49,8 @@ int safeInputInt(const string& prompt) {
 
 int safePositiveInputInt(const string& prompt) {
     while (true) {
-        if (int number = safeInputInt(prompt); number > 0)
-            return number;
+        int number = safeInputInt(prompt);
+        if (number > 0) return number;
         cout << "Число должно быть положительным\n";
     }
 }
