@@ -70,7 +70,7 @@ void Matrix::copyFrom(const Matrix& other) {
     }
 }
 
-void Matrix::input() {
+void Matrix::input() const {
     if (!isValid()) {
         cout << "Матрица не создана.\n";
         return;
