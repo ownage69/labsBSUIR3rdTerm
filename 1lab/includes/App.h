@@ -10,7 +10,7 @@ private:
 
     void showMenu() const;
     void createMatrices();
-    void inputMatrices();
+    void inputMatrices() const;
     void displayMatrices() const;
     void subtractMatrices();
 

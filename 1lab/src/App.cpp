@@ -23,7 +23,7 @@ void App::createMatrices() {
     cout << "Матрицы A и B (" << r << "x" << c << ") созданы.\n";
 }
 
-void App::inputMatrices() {
+void App::inputMatrices() const {
     if (!matricesCreated) {
         cout << "Сначала создайте матрицы.\n";
         return;
