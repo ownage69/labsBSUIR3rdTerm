@@ -19,7 +19,7 @@ public:
     void create(int r, int c);
     void copyFrom(const Matrix& other);
 
-    void input();
+    void input() const;
     void display() const;
     bool subtract(const Matrix& other, Matrix& result) const;
 
