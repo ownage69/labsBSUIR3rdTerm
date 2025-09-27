@@ -1,5 +1,5 @@
-## Программирование на языках высокого уровня
-![C++](https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
+## Программирование на языках высокого уровня ![C++](https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
+
 
 Репозиторий для выполнения лабораторных работ по курсу **"Программирование на языках высокого уровня"**.
 
