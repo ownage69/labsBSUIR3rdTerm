@@ -58,9 +58,9 @@ void SolvableQuadraticEquation::solve() {
         return;
     }
 
-    double da = static_cast<double>(a);
-    double db = static_cast<double>(b);
-    double dc = static_cast<double>(c);
+    auto da = static_cast<double>(a);
+    auto db = static_cast<double>(b);
+    auto dc = static_cast<double>(c);
 
     double discriminant = db * db - 4 * da * dc;
 

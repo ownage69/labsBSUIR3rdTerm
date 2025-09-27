@@ -11,7 +11,7 @@ private:
     int numRoots;  
 
 public:
-    SolvableQuadraticEquation(int a_val = 0, int b_val = 0, int c_val = 0);
+    explicit SolvableQuadraticEquation(int a_val = 0, int b_val = 0, int c_val = 0);
     SolvableQuadraticEquation(const SolvableQuadraticEquation& other); 
     SolvableQuadraticEquation& operator=(const SolvableQuadraticEquation& other);
     ~SolvableQuadraticEquation(); 

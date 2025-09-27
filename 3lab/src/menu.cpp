@@ -2,6 +2,7 @@
 #include "safeInput.h"
 #include <iostream>
 #include <string>
+#include <format>
 
 void inputCoefficients(SolvableQuadraticEquation& eq) {
     int a = safeInputInt("Введите коэффициент a: ");
@@ -14,22 +15,19 @@ void inputCoefficients(SolvableQuadraticEquation& eq) {
 }
 
 void printEquation(const SolvableQuadraticEquation& eq) {
-    std::string equationStr = std::to_string(eq.getA()) + "x^2";
+    int a_val = eq.getA();
     int b_val = eq.getB();
-    if (b_val >= 0) {
-        equationStr += " + " + std::to_string(b_val) + "x";
-    }
-    else {
-        equationStr += " - " + std::to_string(-b_val) + "x";
-    }
     int c_val = eq.getC();
-    if (c_val >= 0) {
-        equationStr += " + " + std::to_string(c_val);
-    }
-    else {
-        equationStr += " - " + std::to_string(-c_val);
-    }
-    equationStr += " = 0";
+
+    std::string equationStr = std::format(
+        "{}x^2 {} {}x {} {} = 0",
+        a_val,
+        (b_val >= 0 ? "+" : "-"),
+        std::abs(b_val),
+        (c_val >= 0 ? "+" : "-"),
+        std::abs(c_val)
+    );
+
     std::cout << "Полученное уравнение: " << equationStr << std::endl;
 }
 
