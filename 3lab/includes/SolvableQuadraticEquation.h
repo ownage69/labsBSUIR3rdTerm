@@ -7,8 +7,8 @@
 class SolvableQuadraticEquation : public QuadraticEquation {
 private:
     int c;
-    double* roots; 
-    int numRoots;  
+    double* roots = nullptr; 
+    int numRoots = 0;  
 
 public:
     explicit SolvableQuadraticEquation(int a_val = 0, int b_val = 0, int c_val = 0);

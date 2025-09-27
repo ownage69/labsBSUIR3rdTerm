@@ -1,7 +1,7 @@
 ﻿#include "SolvableQuadraticEquation.h"
 
 SolvableQuadraticEquation::SolvableQuadraticEquation(int a_val, int b_val, int c_val)
-    : QuadraticEquation(a_val, b_val), c(c_val), roots(nullptr), numRoots(0) {
+    : QuadraticEquation(a_val, b_val), c(c_val) {
 }
 
 SolvableQuadraticEquation::SolvableQuadraticEquation(const SolvableQuadraticEquation& other)
