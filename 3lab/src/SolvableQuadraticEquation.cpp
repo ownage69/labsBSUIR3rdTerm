@@ -1,4 +1,4 @@
-#include "SolvableQuadraticEquation.h"
+ï»¿#include "SolvableQuadraticEquation.h"
 
 SolvableQuadraticEquation::SolvableQuadraticEquation(int a_val, int b_val, int c_val)
     : QuadraticEquation(a_val, b_val), c(c_val), x1(0.0), x2(0.0), hasRealRoots(false) {
@@ -44,15 +44,15 @@ void SolvableQuadraticEquation::solve() {
 
 void SolvableQuadraticEquation::printRoots() const {
     if (a == 0) {
-        std::cout << "Îøèáêà: êîýôôèöèåíò a íå ìîæåò áûòü íóëåâûì (íå êâàäðàòíîå óðàâíåíèå)." << std::endl;
+        std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ°: ÐºÐ¾ÑÑ„Ñ„Ð¸Ñ†Ð¸ÐµÐ½Ñ‚ a Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð½ÑƒÐ»ÐµÐ²Ñ‹Ð¼ (Ð½Ðµ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ð½Ð¾Ðµ ÑƒÑ€Ð°Ð²Ð½ÐµÐ½Ð¸Ðµ)." << std::endl;
         return;
     }
 
     if (hasRealRoots) {
-        std::cout << "Ïåðâûé êîðåíü x1: " << x1 << std::endl;
-        std::cout << "Âòîðîé êîðåíü x2: " << x2 << std::endl;
+        std::cout << "ÐŸÐµÑ€Ð²Ñ‹Ð¹ ÐºÐ¾Ñ€ÐµÐ½ÑŒ x1: " << x1 << std::endl;
+        std::cout << "Ð’Ñ‚Ð¾Ñ€Ð¾Ð¹ ÐºÐ¾Ñ€ÐµÐ½ÑŒ x2: " << x2 << std::endl;
     }
     else {
-        std::cout << "Äèñêðèìèíàíò îòðèöàòåëüíûé: íåò ðåàëüíûõ êîðíåé." << std::endl;
+        std::cout << "Ð”Ð¸ÑÐºÑ€Ð¸Ð¼Ð¸Ð½Ð°Ð½Ñ‚ Ð¾Ñ‚Ñ€Ð¸Ñ†Ð°Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ð¹: Ð½ÐµÑ‚ Ñ€ÐµÐ°Ð»ÑŒÐ½Ñ‹Ñ… ÐºÐ¾Ñ€Ð½ÐµÐ¹." << std::endl;
     }
 }

@@ -1,4 +1,4 @@
-#include "safeInput.h"
+ï»¿#include "safeInput.h"
 #include <iostream>
 #include <string>
 #include <regex>
@@ -35,14 +35,14 @@ int safeInputInt(const string& prompt) {
                 return std::stoi(input);
             }
             catch (const std::invalid_argument&) {
-                cout << "Íåêîððåêòíûé ââîä. Ââåäèòå ÷èñëî.\n";
+                cout << "ÐÐµÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´. Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾.\n";
             }
             catch (const std::out_of_range&) {
-                cout << "×èñëî âíå äèàïàçîíà int. Ââåäèòå çàíîâî.\n";
+                cout << "Ð§Ð¸ÑÐ»Ð¾ Ð²Ð½Ðµ Ð´Ð¸Ð°Ð¿Ð°Ð·Ð¾Ð½Ð° int. Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð°Ð½Ð¾Ð²Ð¾.\n";
             }
         }
         else {
-            cout << "Íåêîððåêòíûé ââîä. Ââåäèòå öåëîå ÷èñëî\n";
+            cout << "ÐÐµÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´. Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ†ÐµÐ»Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾\n";
         }
     }
 }
@@ -51,6 +51,6 @@ int safePositiveInputInt(const string& prompt) {
     while (true) {
         if (int number = safeInputInt(prompt); number > 0)
             return number;
-        cout << "×èñëî äîëæíî áûòü ïîëîæèòåëüíûì\n";
+        cout << "Ð§Ð¸ÑÐ»Ð¾ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±Ñ‹Ñ‚ÑŒ Ð¿Ð¾Ð»Ð¾Ð¶Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ð¼\n";
     }
 }
