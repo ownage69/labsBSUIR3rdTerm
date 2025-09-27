@@ -1,16 +1,16 @@
-#include "menu.h"
+п»ї#include "menu.h"
 #include "safeInput.h"
 #include <iostream>
 #include <string>
 
 void inputCoefficients(SolvableQuadraticEquation& eq) {
-    int a = safeInputInt("Введите коэффициент a: ");
-    int b = safeInputInt("Введите коэффициент b: ");
-    int c = safeInputInt("Введите коэффициент c: ");
+    int a = safeInputInt("Р’РІРµРґРёС‚Рµ РєРѕСЌС„С„РёС†РёРµРЅС‚ a: ");
+    int b = safeInputInt("Р’РІРµРґРёС‚Рµ РєРѕСЌС„С„РёС†РёРµРЅС‚ b: ");
+    int c = safeInputInt("Р’РІРµРґРёС‚Рµ РєРѕСЌС„С„РёС†РёРµРЅС‚ c: ");
     eq.setA(a);
     eq.setB(b);
     eq.setC(c);
-    std::cout << "Коэффициенты обновлены.\n";
+    std::cout << "РљРѕСЌС„С„РёС†РёРµРЅС‚С‹ РѕР±РЅРѕРІР»РµРЅС‹.\n";
 }
 
 void printEquation(const SolvableQuadraticEquation& eq) {
@@ -30,7 +30,7 @@ void printEquation(const SolvableQuadraticEquation& eq) {
         equationStr += " - " + std::to_string(-c_val);
     }
     equationStr += " = 0";
-    std::cout << "Полученное уравнение: " << equationStr << std::endl;
+    std::cout << "РџРѕР»СѓС‡РµРЅРЅРѕРµ СѓСЂР°РІРЅРµРЅРёРµ: " << equationStr << std::endl;
 }
 
 void solveAndPrint(SolvableQuadraticEquation& eq) {
@@ -40,13 +40,13 @@ void solveAndPrint(SolvableQuadraticEquation& eq) {
 
 void runMenu(SolvableQuadraticEquation& eq) {
     while (true) {
-        std::cout << "\n=====МЕНЮ=====\n";
-        std::cout << "1. Ввести коэффициенты (a, b, c)\n";
-        std::cout << "2. Вывести полученное квадратное уравнение\n";
-        std::cout << "3. Решить уравнение\n";
-        std::cout << "4. Выход\n";
+        std::cout << "\n=====РњР•РќР®=====\n";
+        std::cout << "1. Р’РІРµСЃС‚Рё РєРѕСЌС„С„РёС†РёРµРЅС‚С‹ (a, b, c)\n";
+        std::cout << "2. Р’С‹РІРµСЃС‚Рё РїРѕР»СѓС‡РµРЅРЅРѕРµ РєРІР°РґСЂР°С‚РЅРѕРµ СѓСЂР°РІРЅРµРЅРёРµ\n";
+        std::cout << "3. Р РµС€РёС‚СЊ СѓСЂР°РІРЅРµРЅРёРµ\n";
+        std::cout << "4. Р’С‹С…РѕРґ\n";
 
-        int choice = safeInputInt("Выберите опцию: ");
+        int choice = safeInputInt("Р’С‹Р±РµСЂРёС‚Рµ РѕРїС†РёСЋ: ");
 
         switch (choice) {
         case 1:
@@ -59,10 +59,10 @@ void runMenu(SolvableQuadraticEquation& eq) {
             solveAndPrint(eq);
             break;
         case 4:
-            std::cout << "Выход из программы.\n";
+            std::cout << "Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹.\n";
             return;
         default:
-            std::cout << "Неверная опция. Попробуйте снова.\n";
+            std::cout << "РќРµРІРµСЂРЅР°СЏ РѕРїС†РёСЏ. РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°.\n";
             break;
         }
     }
