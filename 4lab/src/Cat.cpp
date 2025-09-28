@@ -1,15 +1,8 @@
-#include "Cat.h"
+#include "cat.h"
 #include <iostream>
 
-
-Cat::Cat(const std::string& name, int age, const std::string& color)
-	: Animal(name, age), color(color) {
-}
-
-
-Cat::~Cat() {}
-
+Cat::Cat(const std::string& n, int a, const std::string& c) : Animal(n, a), color(c) {}
 
 void Cat::describe() const {
-	std::cout << "Кот: " << name << ", окрас: " << color << ", возраст: " << age << " лет." << std::endl;
+    std::cout << "Meow! I'm a cat named " << name << ", age " << age << ", with " << color << " fur." << std::endl;
 }

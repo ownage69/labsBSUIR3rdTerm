@@ -15,6 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="includes\Cat.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
     <ClInclude Include="includes\Dog.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
@@ -24,18 +27,27 @@
     <ClInclude Include="includes\Mammal.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="includes\Animal.h">
-      <Filter>Исходные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Cat.h">
-      <Filter>Исходные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="includes\menu.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\safeInput.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Animal.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Human.cpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClCompile>
     <ClCompile Include="src\main.cpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu.cpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClCompile>
+    <ClCompile Include="src\safeInput.cpp">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
     <ClCompile Include="src\Animal.cpp">
@@ -47,11 +59,13 @@
     <ClCompile Include="src\Dog.cpp">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
-    <ClCompile Include="src\Human.cpp">
+    <ClCompile Include="src\Mammal.cpp">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
-    <ClCompile Include="src\menu.cpp">
-      <Filter>Файлы заголовков</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,11 +1,13 @@
 #pragma once
-#include "Mammal.h"
-//  ласс "„еловек" Ч производный от Mammal
+
+#include "mammal.h"
+#include <string>
+
 class Human : public Mammal {
-	std::string profession;
+private:
+    std::string profession;
+
 public:
-	Human(const std::string& name = "Unnamed", const std::string& profession
-		= "None");
-	virtual ~Human();
-	void describe() const override;
+    Human(const std::string& n, int a, const std::string& p);
+    void describe() const override;
 };

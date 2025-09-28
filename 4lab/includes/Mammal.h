@@ -1,13 +1,14 @@
 #pragma once
+
 #include <string>
-// јбстрактный класс "ћлекопитающее"
+
 class Mammal {
 protected:
-	std::string name;
+    std::string name;
+    int age;
+
 public:
-	Mammal(const std::string& name = "Unnamed") : name(name) {}
-	virtual ~Mammal() {}
-	// „исто виртуальна€ функци€ описани€ Ч класс абстрактный
-	virtual void describe() const = 0;
-	std::string getName() const { return name; }
+    Mammal(const std::string& n, int a);
+    virtual ~Mammal() = default;
+    virtual void describe() const = 0;
 };
