@@ -1,11 +1,13 @@
 #pragma once
-#include "Animal.h"
-//  ласс "—обака" Ч производный от Animal
+
+#include "animal.h"
+#include <string>
+
 class Dog : public Animal {
-	std::string breed;
+private:
+    std::string breed;
+
 public:
-	Dog(const std::string& name = "Dog", int age = 0, const std::string&
-		breed = "Unknown");
-	virtual ~Dog();
-		void describe() const override;
+    Dog(const std::string& n, int a, const std::string& b);
+    void describe() const override;
 };

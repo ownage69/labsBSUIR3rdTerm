@@ -1,11 +1,13 @@
 #pragma once
-#include "Animal.h"
-// Класс "Кот" — производный от Animal
+
+#include "animal.h"
+#include <string>
+
 class Cat : public Animal {
-	std::string color;
+private:
+    std::string color;
+
 public:
-	Cat(const std::string& name = "Cat", int age = 0, const std::string&
-		color = "Unknown");
-	virtual ~Cat();
-	void describe() const override;
+    Cat(const std::string& n, int a, const std::string& c);
+    void describe() const override;
 };

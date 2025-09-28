@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e9a141e4-1583-4c31-bda0-f7ac7b58f624}</ProjectGuid>
+    <ProjectGuid>{2045b7d2-dcda-4edd-aa45-6f7eee98c11e}</ProjectGuid>
     <RootNamespace>My4lab</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -102,6 +102,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)includes</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -130,6 +131,7 @@
     <ClInclude Include="includes\Human.h" />
     <ClInclude Include="includes\Mammal.h" />
     <ClInclude Include="includes\menu.h" />
+    <ClInclude Include="includes\safeInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Animal.cpp" />
@@ -137,7 +139,12 @@
     <ClCompile Include="src\Dog.cpp" />
     <ClCompile Include="src\Human.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Mammal.cpp" />
     <ClCompile Include="src\menu.cpp" />
+    <ClCompile Include="src\safeInput.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

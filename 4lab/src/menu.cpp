@@ -1,85 +1,132 @@
 #include "menu.h"
-#include "Human.h"
-#include "Dog.h"
-#include "Cat.h"
+#include "safeinput.h"
+#include "dog.h"
+#include "cat.h"
+#include "human.h"
 #include <iostream>
-#include <vector>
-#include <limits>
-// Простейшее меню с динамическим созданием объектов-наследников Mammal
-void clearCin() {
-	std::cin.clear();
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), ' ');
-}
-void runMenu() {
-	std::vector<Mammal*> items; // динамически создаваемые объекты
-	int choice = 0;
-	do {
-		std::cout << "===== МЕНЮ =====";
-			std::cout << "1 - Создать человек";
-			std::cout << "2 - Создать собаку";
-			std::cout << "3 - Создать кота";
-			std::cout << "4 - Показать все описания";
-			std::cout << "5 - Удалить объект по индексу";
-			std::cout << "0 - Выход";
-			std::cout << "Выбор: ";
-		if (!(std::cin >> choice)) {
-			clearCin();
-			std::cout << "Неверный ввод, повторите.";
-				continue;
-		}
-		if (choice == 1) {
-			std::string name, prof;
-			std::cout << "Имя человека: "; std::cin >> name;
-			std::cout << "Профессия: "; std::cin >> prof;
-			items.push_back(new Human(name, prof));
-			std::cout << "Человек создан.";
-		}
-		else if (choice == 2) {
-			std::string name, breed; int age;
-			std::cout << "Имя собаки: "; std::cin >> name;
-			std::cout << "Возраст: "; std::cin >> age;
-			std::cout << "Порода: "; std::cin >> breed;
-			items.push_back(new Dog(name, age, breed));
-			std::cout << "Собака создана";
-		}
-		else if (choice == 3) {
-			std::string name, color; int age;
-			std::cout << "Имя кота: "; std::cin >> name;
-			std::cout << "Возраст: "; std::cin >> age;
-			std::cout << "Окрас: "; std::cin >> color;
-			items.push_back(new Cat(name, age, color));
-			std::cout << "Кот создан";
-		}
-		else if (choice == 4) {
-			if (items.empty()) {
-				std::cout << "Список пуст.";
-			}
-			else {
-				for (size_t i = 0; i < items.size(); ++i) {
-					std::cout << i << ": ";
-					items[i]->describe();
-				}
-			}
-		}
-		else if (choice == 5) {
-			if (items.empty()) {
-				std::cout << "Список пуст."; continue;
-			}
-			size_t idx;
-			std::cout << "Индекс для удаления: "; std::cin >> idx;
-			if (idx >= items.size()) {
-				std::cout << "Неверный индекс.";
-			}
-			else {
-				delete items[idx];
-				items.erase(items.begin() + idx);
-				std::cout << "Объект удалён.";
-			}
-		}
-	} while (choice != 0);
-	// Освобождаем память перед выходом
-	for (Mammal* p : items) delete p;
-	items.clear();
-	std::cout << "Завершение программы.";
+
+void resize(Mammal**& mammals, int& capacity, int numMammals) {
+    int newCapacity = capacity * 2 + 1;
+    Mammal** newMammals = new Mammal * [newCapacity];
+    for (int i = 0; i < numMammals; ++i) {
+        newMammals[i] = mammals[i];
+    }
+    delete[] mammals;
+    mammals = newMammals;
+    capacity = newCapacity;
 }
 
+void createDog(Mammal**& mammals, int& capacity, int& numMammals) {
+    if (numMammals == capacity) {
+        resize(mammals, capacity, numMammals);
+    }
+    std::string name = getSafeString("Enter dog name: ");
+    int age = getSafeInt("Enter dog age: ");
+    std::string breed = getSafeString("Enter dog breed: ");
+    mammals[numMammals++] = new Dog(name, age, breed);
+    std::cout << "Dog created.\n";
+}
+
+void createCat(Mammal**& mammals, int& capacity, int& numMammals) {
+    if (numMammals == capacity) {
+        resize(mammals, capacity, numMammals);
+    }
+    std::string name = getSafeString("Enter cat name: ");
+    int age = getSafeInt("Enter cat age: ");
+    std::string color = getSafeString("Enter cat color: ");
+    mammals[numMammals++] = new Cat(name, age, color);
+    std::cout << "Cat created.\n";
+}
+
+void createHuman(Mammal**& mammals, int& capacity, int& numMammals) {
+    if (numMammals == capacity) {
+        resize(mammals, capacity, numMammals);
+    }
+    std::string name = getSafeString("Enter human name: ");
+    int age = getSafeInt("Enter human age: ");
+    std::string profession = getSafeString("Enter human profession: ");
+    mammals[numMammals++] = new Human(name, age, profession);
+    std::cout << "Human created.\n";
+}
+
+void describeAll(Mammal** mammals, int numMammals) {
+    if (numMammals == 0) {
+        std::cout << "No objects created yet.\n";
+        return;
+    }
+    std::cout << "Describing all objects:\n";
+    for (int i = 0; i < numMammals; ++i) {
+        std::cout << "[" << (i + 1) << "]";
+        mammals[i]->describe();
+    }
+}
+
+void deleteByIndex(Mammal**& mammals, int& numMammals) {
+    if (numMammals == 0) {
+        std::cout << "No objects to delete.\n";
+        return;
+    }
+    int index = getSafeInt("Enter index to delete (1-" + std::to_string(numMammals) + "): ");
+    if (index < 1 || index > numMammals) {
+        std::cout << "Invalid index.\n";
+        return;
+    }
+    delete mammals[index - 1];
+    for (int j = index - 1; j < numMammals - 1; ++j) {
+        mammals[j] = mammals[j + 1];
+    }
+    --numMammals;
+    std::cout << "Object deleted.\n";
+}
+
+void deleteAll(Mammal**& mammals, int& numMammals) {
+    for (int i = 0; i < numMammals; ++i) {
+        delete mammals[i];
+    }
+    delete[] mammals;
+    mammals = nullptr;
+    numMammals = 0;
+}
+
+void runMenu() {
+    Mammal** mammals = nullptr;
+    int capacity = 0;
+    int numMammals = 0;
+    int choice = 0;
+
+    while (choice != 6) {
+        std::cout << "\nMenu:\n";
+        std::cout << "1. Create Dog\n";
+        std::cout << "2. Create Cat\n";
+        std::cout << "3. Create Human\n";
+        std::cout << "4. Describe all objects\n";
+        std::cout << "5. Delete object by index\n";
+        std::cout << "6. Exit\n";
+        choice = getSafeInt("Enter your choice: ");
+
+        switch (choice) {
+        case 1:
+            createDog(mammals, capacity, numMammals);
+            break;
+        case 2:
+            createCat(mammals, capacity, numMammals);
+            break;
+        case 3:
+            createHuman(mammals, capacity, numMammals);
+            break;
+        case 4:
+            describeAll(mammals, numMammals);
+            break;
+        case 5:
+            deleteByIndex(mammals, numMammals);
+            break;
+        case 6:
+            deleteAll(mammals, numMammals);
+            std::cout << "Exiting program.\n";
+            break;
+        default:
+            std::cout << "Invalid choice. Try again.\n";
+            break;
+        }
+    }
+}
