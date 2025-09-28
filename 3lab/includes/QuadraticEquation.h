@@ -3,7 +3,6 @@
 #include "EquationCoefficients.h"
 
 class QuadraticEquation : public EquationCoefficients {
-protected:
     int b;
 
 public:

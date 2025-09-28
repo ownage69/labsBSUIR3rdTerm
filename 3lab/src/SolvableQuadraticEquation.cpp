@@ -51,15 +51,15 @@ void SolvableQuadraticEquation::setC(int c_val) {
 }
 
 void SolvableQuadraticEquation::solve() {
-    if (a == 0) {
+    if (getA() == 0) {
         delete[] roots;
         roots = nullptr;
         numRoots = 0;
         return;
     }
 
-    auto da = static_cast<double>(a);
-    auto db = static_cast<double>(b);
+    auto da = static_cast<double>(getA());
+    auto db = static_cast<double>(getB());
     auto dc = static_cast<double>(c);
 
     double discriminant = db * db - 4 * da * dc;
@@ -91,7 +91,7 @@ void SolvableQuadraticEquation::solve() {
 }
 
 void SolvableQuadraticEquation::printRoots() const {
-    if (a == 0) {
+    if (getA() == 0) {
         std::cout << "Ошибка: коэффициент a не может быть нулевым (не квадратное уравнение)." << std::endl;
         return;
     }
