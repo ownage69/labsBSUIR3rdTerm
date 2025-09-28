@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 class EquationCoefficients {
-protected:
     int a;
 
 public:
