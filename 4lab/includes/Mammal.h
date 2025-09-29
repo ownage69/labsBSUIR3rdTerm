@@ -5,7 +5,7 @@ class Mammal {
 private:
     std::string name;
 public:
-    Mammal(const std::string& name = "Unnamed") : name(name) {}
+    explicit Mammal(const std::string& name = "Unnamed") : name(name) {}
     virtual ~Mammal() = default;
 
     virtual void describe() const = 0;
