@@ -2,11 +2,10 @@
 #include "Mammal.h"
 
 class Human : public Mammal {
-protected:
     std::string profession;
     int age;
 public:
-    explicit Human(const std::string& name = "Unnamed", int age = 0, const std::string& profession = "None");
-    virtual ~Human();
+    Human(const std::string& name = "Unnamed", int age = 0, const std::string& profession = "None");
+    virtual ~Human() = default;
     void describe() const override;
 };

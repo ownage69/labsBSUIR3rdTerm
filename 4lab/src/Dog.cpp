@@ -4,7 +4,6 @@
 Dog::Dog(const std::string& name, int age, const std::string& breed)
     : Animal(name, age), breed(breed) {
 }
-Dog::~Dog() {}
 void Dog::describe() const {
-    std::cout << "Dog: " << name << ", breed: " << breed << ", age: " << age << " years." << std::endl;
+    std::cout << "Dog: " << getName() << ", breed: " << breed << ", age: " << getAge() << " years." << std::endl;
 }

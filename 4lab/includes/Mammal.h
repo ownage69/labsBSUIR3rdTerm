@@ -2,11 +2,11 @@
 #include <string>
 
 class Mammal {
-protected:
+private:
     std::string name;
 public:
-    explicit Mammal(const std::string& name = "Unnamed") : name(name) {}
-    virtual ~Mammal() {}
+    Mammal(const std::string& name = "Unnamed") : name(name) {}
+    virtual ~Mammal() = default;
 
     virtual void describe() const = 0;
     std::string getName() const { return name; }
