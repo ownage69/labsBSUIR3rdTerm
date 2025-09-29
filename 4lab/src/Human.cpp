@@ -1,8 +1,10 @@
-#include "human.h"
+#include "Human.h"
 #include <iostream>
 
-Human::Human(const std::string& n, int a, const std::string& p) : Mammal(n, a), profession(p) {}
-
+Human::Human(const std::string& name, int age, const std::string& profession)
+    : Mammal(name), age(age), profession(profession) {
+}
+Human::~Human() {}
 void Human::describe() const {
-    std::cout << "Hello! I am a human named " << name << ", age " << age << ", working as a " << profession << "." << std::endl;
+    std::cout << "Human: " << name << ", age: " << age << " years, profession: " << profession << "." << std::endl;
 }

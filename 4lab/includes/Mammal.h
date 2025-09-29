@@ -1,14 +1,13 @@
 #pragma once
-
 #include <string>
 
 class Mammal {
 protected:
     std::string name;
-    int age;
-
 public:
-    Mammal(const std::string& n, int a);
-    virtual ~Mammal() = default;
+    Mammal(const std::string& name = "Unnamed") : name(name) {}
+    virtual ~Mammal() {}
+
     virtual void describe() const = 0;
+    std::string getName() const { return name; }
 };
