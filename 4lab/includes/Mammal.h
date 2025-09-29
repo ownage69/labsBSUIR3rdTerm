@@ -2,6 +2,7 @@
 #include <string>
 
 class Mammal {
+protected:
     std::string name;
 public:
     explicit Mammal(const std::string& name = "Unnamed") : name(name) {}
