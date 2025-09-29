@@ -2,10 +2,9 @@
 #include "Animal.h"
 
 class Dog : public Animal {
-protected:
     std::string breed;
 public:
-    explicit Dog(const std::string& name = "Dog", int age = 0, const std::string& breed = "Unknown");
-    virtual ~Dog();
+    Dog(const std::string& name = "Dog", int age = 0, const std::string& breed = "Unknown");
+    virtual ~Dog() = default;
     void describe() const override;
 };
