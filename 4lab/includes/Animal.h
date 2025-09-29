@@ -2,6 +2,7 @@
 #include "Mammal.h"
 
 class Animal : public Mammal {
+protected:
     int age;
 public:
     explicit Animal(const std::string& name = "Unnamed", int age = 0);

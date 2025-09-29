@@ -2,6 +2,7 @@
 #include "Mammal.h"
 
 class Human : public Mammal {
+protected:
     std::string profession;
     int age;
 public:
