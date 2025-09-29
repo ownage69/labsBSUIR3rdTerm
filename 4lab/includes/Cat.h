@@ -1,13 +1,10 @@
 #pragma once
-
-#include "animal.h"
-#include <string>
+#include "Animal.h"
 
 class Cat : public Animal {
-private:
     std::string color;
-
 public:
-    Cat(const std::string& n, int a, const std::string& c);
+    Cat(const std::string& name = "Cat", int age = 0, const std::string& color = "Unknown");
+    virtual ~Cat();
     void describe() const override;
 };

@@ -1,3 +1,10 @@
-#include "animal.h"
+#include "Animal.h"
+#include <iostream>
 
-Animal::Animal(const std::string& n, int a) : Mammal(n, a) {}
+Animal::Animal(const std::string& name, int age)
+    : Mammal(name), age(age) {
+}
+Animal::~Animal() {}
+void Animal::describe() const {
+    std::cout << "Animal: " << name << ", age: " << age << " years." << std::endl;
+}

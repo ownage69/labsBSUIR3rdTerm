@@ -1,132 +1,115 @@
 #include "menu.h"
-#include "safeinput.h"
-#include "dog.h"
-#include "cat.h"
-#include "human.h"
+#include "safeInput.h"
+#include "Human.h"
+#include "Dog.h"
+#include "Cat.h"
 #include <iostream>
+#include <algorithm>
 
-void resize(Mammal**& mammals, int& capacity, int numMammals) {
-    int newCapacity = capacity * 2 + 1;
-    Mammal** newMammals = new Mammal * [newCapacity];
-    for (int i = 0; i < numMammals; ++i) {
-        newMammals[i] = mammals[i];
-    }
-    delete[] mammals;
-    mammals = newMammals;
-    capacity = newCapacity;
+Mammal* createHuman() {
+    std::string name = safeInputString("Human name: ");
+    int age = safeNonNegativeInputInt("Age: ");
+    std::string prof = safeInputString("Profession: ");
+    return new Human(name, age, prof);
 }
 
-void createDog(Mammal**& mammals, int& capacity, int& numMammals) {
-    if (numMammals == capacity) {
-        resize(mammals, capacity, numMammals);
-    }
-    std::string name = getSafeString("Enter dog name: ");
-    int age = getSafeInt("Enter dog age: ");
-    std::string breed = getSafeString("Enter dog breed: ");
-    mammals[numMammals++] = new Dog(name, age, breed);
-    std::cout << "Dog created.\n";
+Mammal* createDog() {
+    std::string name = safeInputString("Dog name: ");
+    int age = safeNonNegativeInputInt("Age: ");
+    std::string breed = safeInputString("Breed: ");
+    return new Dog(name, age, breed);
 }
 
-void createCat(Mammal**& mammals, int& capacity, int& numMammals) {
-    if (numMammals == capacity) {
-        resize(mammals, capacity, numMammals);
-    }
-    std::string name = getSafeString("Enter cat name: ");
-    int age = getSafeInt("Enter cat age: ");
-    std::string color = getSafeString("Enter cat color: ");
-    mammals[numMammals++] = new Cat(name, age, color);
-    std::cout << "Cat created.\n";
+Mammal* createCat() {
+    std::string name = safeInputString("Cat name: ");
+    int age = safeNonNegativeInputInt("Age: ");
+    std::string color = safeInputString("Color: ");
+    return new Cat(name, age, color);
 }
 
-void createHuman(Mammal**& mammals, int& capacity, int& numMammals) {
-    if (numMammals == capacity) {
-        resize(mammals, capacity, numMammals);
+void addItem(Mammal**& items, size_t& capacity, size_t& count, Mammal* new_mammal) {
+    if (count == capacity) {
+        size_t new_cap = capacity ? capacity * 2 : 1;
+        Mammal** new_items = new Mammal * [new_cap];
+        std::copy(items, items + count, new_items);
+        delete[] items;
+        items = new_items;
+        capacity = new_cap;
     }
-    std::string name = getSafeString("Enter human name: ");
-    int age = getSafeInt("Enter human age: ");
-    std::string profession = getSafeString("Enter human profession: ");
-    mammals[numMammals++] = new Human(name, age, profession);
-    std::cout << "Human created.\n";
+    items[count++] = new_mammal;
 }
 
-void describeAll(Mammal** mammals, int numMammals) {
-    if (numMammals == 0) {
-        std::cout << "No objects created yet.\n";
+void displayItems(Mammal** items, size_t count) {
+    if (count == 0) {
+        std::cout << "List is empty.\n";
         return;
     }
-    std::cout << "Describing all objects:\n";
-    for (int i = 0; i < numMammals; ++i) {
-        std::cout << "[" << (i + 1) << "]";
-        mammals[i]->describe();
+    for (size_t i = 0; i < count; ++i) {
+        std::cout << (i + 1) << ": ";
+        items[i]->describe();
     }
 }
 
-void deleteByIndex(Mammal**& mammals, int& numMammals) {
-    if (numMammals == 0) {
-        std::cout << "No objects to delete.\n";
+void deleteItem(Mammal**& items, size_t& capacity, size_t& count) {
+    if (count == 0) {
+        std::cout << "List is empty.\n";
         return;
     }
-    int index = getSafeInt("Enter index to delete (1-" + std::to_string(numMammals) + "): ");
-    if (index < 1 || index > numMammals) {
+    int idx_int = safePositiveInputInt("Index to delete: ");
+    size_t idx = static_cast<size_t>(idx_int - 1);
+    if (idx >= count) {
         std::cout << "Invalid index.\n";
         return;
     }
-    delete mammals[index - 1];
-    for (int j = index - 1; j < numMammals - 1; ++j) {
-        mammals[j] = mammals[j + 1];
+    delete items[idx];
+    for (size_t i = idx; i < count - 1; ++i) {
+        items[i] = items[i + 1];
     }
-    --numMammals;
+    --count;
     std::cout << "Object deleted.\n";
 }
 
-void deleteAll(Mammal**& mammals, int& numMammals) {
-    for (int i = 0; i < numMammals; ++i) {
-        delete mammals[i];
-    }
-    delete[] mammals;
-    mammals = nullptr;
-    numMammals = 0;
-}
-
 void runMenu() {
-    Mammal** mammals = nullptr;
-    int capacity = 0;
-    int numMammals = 0;
+    Mammal** items = nullptr;
+    size_t capacity = 0;
+    size_t count = 0;
     int choice = 0;
-
-    while (choice != 6) {
-        std::cout << "\nMenu:\n";
-        std::cout << "1. Create Dog\n";
-        std::cout << "2. Create Cat\n";
-        std::cout << "3. Create Human\n";
-        std::cout << "4. Describe all objects\n";
-        std::cout << "5. Delete object by index\n";
-        std::cout << "6. Exit\n";
-        choice = getSafeInt("Enter your choice: ");
-
+    do {
+        std::cout << "\n===== MENU =====\n";
+        std::cout << "1 - Create human\n";
+        std::cout << "2 - Create dog\n";
+        std::cout << "3 - Create cat\n";
+        std::cout << "4 - Show all descriptions\n";
+        std::cout << "5 - Delete object by index\n";
+        std::cout << "0 - Exit\n";
+        choice = safeInputInt("Choice: ");
         switch (choice) {
         case 1:
-            createDog(mammals, capacity, numMammals);
+            addItem(items, capacity, count, createHuman());
+            std::cout << "Human created.\n";
             break;
         case 2:
-            createCat(mammals, capacity, numMammals);
+            addItem(items, capacity, count, createDog());
+            std::cout << "Dog created.\n";
             break;
         case 3:
-            createHuman(mammals, capacity, numMammals);
+            addItem(items, capacity, count, createCat());
+            std::cout << "Cat created.\n";
             break;
         case 4:
-            describeAll(mammals, numMammals);
+            displayItems(items, count);
             break;
         case 5:
-            deleteByIndex(mammals, numMammals);
+            deleteItem(items, capacity, count);
             break;
-        case 6:
-            deleteAll(mammals, numMammals);
-            std::cout << "Exiting program.\n";
+        case 0:
             break;
         default:
-            std::cout << "Invalid choice. Try again.\n";
+            std::cout << "Invalid choice.\n";
             break;
         }
-    }
+    } while (choice != 0);
+    for (size_t i = 0; i < count; ++i) delete items[i];
+    delete[] items;
+    std::cout << "Program termination.\n";
 }
