@@ -6,8 +6,8 @@ private:
     int age;
 public:
     explicit Animal(const std::string& name = "Unnamed", int age = 0);
-    virtual ~Animal() = default;
+    ~Animal() override = default;
 
-    virtual void describe() const override;
+    void describe() const override;
     int getAge() const { return age; }
 };

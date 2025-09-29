@@ -6,6 +6,6 @@ class Human : public Mammal {
     int age;
 public:
     explicit Human(const std::string& name = "Unnamed", int age = 0, const std::string& profession = "None");
-    virtual ~Human() = default;
+    ~Human() override = default;
     void describe() const override;
 };

@@ -5,6 +5,7 @@
 #include "Cat.h"
 #include <iostream>
 #include <algorithm>
+#include <span>
 
 Mammal* createHuman() {
     std::string name = safeInputString("Human name: ");
@@ -29,8 +30,8 @@ Mammal* createCat() {
 
 void addItem(Mammal**& items, size_t& capacity, size_t& count, Mammal* new_mammal) {
     if (count == capacity) {
-        size_t new_cap = capacity ? capacity * 2 : 1;
-        Mammal** new_items = new Mammal * [new_cap];
+        auto new_cap = capacity ? capacity * 2 : 1;
+        auto** new_items = new Mammal * [new_cap];
         std::copy(items, items + count, new_items);
         delete[] items;
         items = new_items;
@@ -39,24 +40,24 @@ void addItem(Mammal**& items, size_t& capacity, size_t& count, Mammal* new_mamma
     items[count++] = new_mammal;
 }
 
-void displayItems(Mammal** items, size_t count) {
-    if (count == 0) {
+void displayItems(std::span<Mammal*> items) {
+    if (items.empty()) {
         std::cout << "List is empty.\n";
         return;
     }
-    for (size_t i = 0; i < count; ++i) {
+    for (size_t i = 0; i < items.size(); ++i) {
         std::cout << (i + 1) << ": ";
         items[i]->describe();
     }
 }
 
-void deleteItem(Mammal**& items, size_t& capacity, size_t& count) {
+void deleteItem(Mammal**& items, size_t& count) {
     if (count == 0) {
         std::cout << "List is empty.\n";
         return;
     }
     int idx_int = safePositiveInputInt("Index to delete: ");
-    size_t idx = static_cast<size_t>(idx_int - 1);
+    auto idx = static_cast<size_t>(idx_int - 1);
     if (idx >= count) {
         std::cout << "Invalid index.\n";
         return;
@@ -97,10 +98,10 @@ void runMenu() {
             std::cout << "Cat created.\n";
             break;
         case 4:
-            displayItems(items, count);
+            displayItems({ items, count });
             break;
         case 5:
-            deleteItem(items, capacity, count);
+            deleteItem(items, count);
             break;
         case 0:
             break;

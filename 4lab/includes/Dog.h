@@ -5,6 +5,6 @@ class Dog : public Animal {
     std::string breed;
 public:
     explicit Dog(const std::string& name = "Dog", int age = 0, const std::string& breed = "Unknown");
-    virtual ~Dog() = default;
+    ~Dog() override = default;
     void describe() const override;
 };
