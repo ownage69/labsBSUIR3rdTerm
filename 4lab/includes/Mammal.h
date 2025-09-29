@@ -2,10 +2,9 @@
 #include <string>
 
 class Mammal {
-protected:
     std::string name;
 public:
-    Mammal(const std::string& name = "Unnamed") : name(name) {}
+    explicit Mammal(const std::string& name = "Unnamed") : name(name) {}
     virtual ~Mammal() {}
 
     virtual void describe() const = 0;
