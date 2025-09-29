@@ -65,8 +65,7 @@ int safeNonNegativeInputInt(const string& prompt) {
 
 std::string safeInputString(const std::string& prompt) {
     while (true) {
-        std::string input = readLineTrimmed(prompt);
-        if (!input.empty()) {
+        if (std::string input = readLineTrimmed(prompt); !input.empty()) {
             return input;
         }
         cout << "Input cannot be empty.\n";
