@@ -10,3 +10,4 @@ public:
     int getB() const;
     void setB(int b_val);
 };
+
