@@ -103,6 +103,6 @@ void SolvableQuadraticEquation::printRoots() const {
         }
     }
     else {
-        std::cout << "Дискриминант отрицательный: нет реальных корней." << std::endl;
+        std::cout << "Дискриминант отрицательный: нет корней." << std::endl;
     }
 }
