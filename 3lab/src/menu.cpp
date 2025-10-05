@@ -4,7 +4,7 @@
 #include <string>
 #include <format>
 
-void inputCoefficients(SolvableQuadraticEquation& eq) {
+void inputCoefficients(C& eq) {
     int a = safeInputInt("Введите коэффициент a: ");
     int b = safeInputInt("Введите коэффициент b: ");
     int c = safeInputInt("Введите коэффициент c: ");
@@ -14,7 +14,7 @@ void inputCoefficients(SolvableQuadraticEquation& eq) {
     std::cout << "Коэффициенты обновлены.\n";
 }
 
-void printEquation(const SolvableQuadraticEquation& eq) {
+void printEquation(const C& eq) {
     int a_val = eq.getA();
     int b_val = eq.getB();
     int c_val = eq.getC();
@@ -31,12 +31,12 @@ void printEquation(const SolvableQuadraticEquation& eq) {
     std::cout << "Полученное уравнение: " << equationStr << std::endl;
 }
 
-void solveAndPrint(SolvableQuadraticEquation& eq) {
+void solveAndPrint(C& eq) {
     eq.solve();
     eq.printRoots();
 }
 
-void runMenu(SolvableQuadraticEquation& eq) {
+void runMenu(C& eq) {
     while (true) {
         std::cout << "\n=====МЕНЮ=====\n";
         std::cout << "1. Ввести коэффициенты (a, b, c)\n";
