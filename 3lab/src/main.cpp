@@ -1,9 +1,10 @@
-﻿#include "SolvableQuadraticEquation.h"
+﻿#include "C.h"
 #include "menu.h"
+#include <clocale>
 
 int main() {
     setlocale(LC_ALL, "");
-    SolvableQuadraticEquation equation;
+    C equation;
     runMenu(equation);
     return 0;
 }

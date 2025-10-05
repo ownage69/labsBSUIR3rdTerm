@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SolvableQuadraticEquation.h"
+#include "C.h"
 
-void runMenu(SolvableQuadraticEquation& eq);
-void inputCoefficients(SolvableQuadraticEquation& eq);
-void printEquation(const SolvableQuadraticEquation& eq);
-void solveAndPrint(SolvableQuadraticEquation& eq);
+void runMenu(C& eq);
+void inputCoefficients(C& eq);
+void printEquation(const C& eq);
+void solveAndPrint(C& eq);
