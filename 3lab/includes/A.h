@@ -3,7 +3,7 @@
 class A {
     int a;
 
-public:
+public: 
     explicit A(int a_val = 0);
     int getA() const;
     void setA(int a_val);
