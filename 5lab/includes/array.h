@@ -32,7 +32,7 @@ Array<T>::Array(int n) : size(n) {
 }
 
 template <typename T>
-Array<T>::Array(const Array& other) : size(0), data(nullptr) {
+Array<T>::Array(const Array& other) {
     if (other.size > 0 && other.data != nullptr) {
         size = other.size;
         data = new T[size];
