@@ -9,8 +9,8 @@
 template <typename T>
 class Array {
 private:
-    T* data;
     int size;
+    T* data;
 
 public:
     explicit Array(int n = 0);
