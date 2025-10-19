@@ -45,7 +45,7 @@ void changeElement(Array<int>& arr) {
     int index = safeNonNegativeInputInt("¬ведите индекс: ");
     int value = safeInputInt("¬ведите новое значение: ");
     try {
-        arr[index] = value;
+        arr[index - 1] = value;
         arr.printArray();
     }
     catch (out_of_range& e) {

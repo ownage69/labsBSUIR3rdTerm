@@ -9,8 +9,8 @@
 template <typename T>
 class Array {
 private:
-    int size;
-    T* data;
+    int size = 0;
+    T* data = 0;
 
 public:
     explicit Array(int n = 0);
@@ -69,7 +69,7 @@ void Array<T>::fillArray() {
     }
     std::cout << "Введите " << size << " элементов:\n";
     for (int i = 0; i < size; i++) {
-        data[i] = safeInputInt(std::format("[{}] = ", i));
+        data[i] = safeInputInt(std::format("[{}] = ", i + 1));
     }
 }
 
