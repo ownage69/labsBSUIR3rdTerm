@@ -2,6 +2,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <algorithm>
+#include <format>
 #include "safeInput.h"
 
 template <typename T>
@@ -11,7 +13,7 @@ private:
     int size;
 
 public:
-    Array(int n = 0);
+    explicit Array(int n = 0);
     Array(const Array& other);
     ~Array();
 
@@ -23,17 +25,12 @@ public:
 };
 
 template <typename T>
-Array<T>::Array(int n) {
-    size = n;
-    data = (size > 0) ? new T[size] : nullptr;
+Array<T>::Array(int n) : size(n), data(n > 0 ? new T[n] : nullptr) {
 }
 
 template <typename T>
-Array<T>::Array(const Array& other) {
-    size = other.size;
-    data = (size > 0) ? new T[size] : nullptr;
-    for (int i = 0; i < size; i++)
-        data[i] = other.data[i];
+Array<T>::Array(const Array& other) : size(other.size), data(size > 0 ? new T[size] : nullptr) {
+    std::copy(other.data, other.data + size, data);
 }
 
 template <typename T>
@@ -47,8 +44,7 @@ Array<T>& Array<T>::operator=(const Array& other) {
         delete[] data;
         size = other.size;
         data = (size > 0) ? new T[size] : nullptr;
-        for (int i = 0; i < size; i++)
-            data[i] = other.data[i];
+        std::copy(other.data, other.data + size, data);
     }
     return *this;
 }
@@ -73,7 +69,7 @@ void Array<T>::fillArray() {
     }
     std::cout << "Введите " << size << " элементов:\n";
     for (int i = 0; i < size; i++) {
-        data[i] = safeInputInt("[" + std::to_string(i) + "] = ");
+        data[i] = safeInputInt(std::format("[{}] = ", i));
     }
 }
 
