@@ -25,7 +25,7 @@ public:
 };
 
 template <typename T>
-Array<T>::Array(int n) : size(n)) {
+Array<T>::Array(int n) : size(n) {
     if (size > 0) {
         data = new T[size];
     }
