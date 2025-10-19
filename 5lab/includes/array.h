@@ -4,7 +4,7 @@
 #include <string>
 #include <algorithm>
 #include <format>
-#include "safeInput.h"
+#include "Safeinput.h"
 
 template <typename T>
 class Array {
@@ -25,14 +25,14 @@ public:
 };
 
 template <typename T>
-Array<T>::Array(int n) : size(n), data(nullptr) {
+Array<T>::Array(int n) : size(n)) {
     if (size > 0) {
         data = new T[size];
     }
 }
 
 template <typename T>
-Array<T>::Array(const Array& other) : size(other.size), data(nullptr) {
+Array<T>::Array(const Array& other) : size(other.size) {
     if (size > 0) {
         data = new T[size];
         std::copy(other.data, other.data + size, data);
