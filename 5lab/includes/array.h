@@ -32,8 +32,9 @@ Array<T>::Array(int n) : size(n) {
 }
 
 template <typename T>
-Array<T>::Array(const Array& other) : size(other.size) {
-    if (size > 0) {
+Array<T>::Array(const Array& other) : size(0), data(nullptr) {
+    if (other.size > 0 && other.data != nullptr) {
+        size = other.size;
         data = new T[size];
         std::copy(other.data, other.data + size, data);
     }
