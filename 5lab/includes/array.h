@@ -4,7 +4,7 @@
 #include <string>
 #include <algorithm>
 #include <format>
-#include "safeInput.h"
+#include "Safeinput.h"
 
 template <typename T>
 class Array {

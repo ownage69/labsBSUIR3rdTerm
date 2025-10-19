@@ -1,5 +1,5 @@
 #include "menu.h"
-#include "safeInput.h"
+#include "Safeinput.h"
 #include <iostream>
 using namespace std;
 
