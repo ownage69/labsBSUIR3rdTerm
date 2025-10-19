@@ -29,7 +29,7 @@ void fillArray(Array<int>& arr) {
     arr.fillArray();
 }
 
-void printArray(Array<int>& arr) {
+void printArray(const Array<int>& arr) {
     if (arr.getSize() <= 0) {
         cout << "Массив не создан!\n";
         return;
@@ -53,7 +53,7 @@ void changeElement(Array<int>& arr) {
     }
 }
 
-void copyArray(Array<int>& arr) {
+void copyArray(const Array<int>& arr) {
     if (arr.getSize() <= 0) {
         cout << "Массив не создан!\n";
         return;
