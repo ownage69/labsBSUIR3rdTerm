@@ -78,7 +78,7 @@ void Array<T>::fillArray() {
     }
     std::cout << "Введите " << size << " элементов:\n";
     for (int i = 0; i < size; i++) {
-        data[i] = safeInputInt(std::format("[{}] = ", i));
+        data[i] = safeInputInt(std::format("[{}] = ", i + 1));
     }
 }
 
