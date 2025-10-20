@@ -44,7 +44,7 @@ int safeInputInt(const string& prompt) {
         auto invalidSet = std::set<char>{};
         for (size_t i = 0; i < input.size(); ++i) {
             char ch = input[i];
-            unsigned char uch = static_cast<unsigned char>(ch);
+            auto uch = static_cast<unsigned char>(ch);
             bool is_valid = (i == 0 && (uch == '+' || uch == '-')) || (uch >= '0' && uch <= '9');
             if (!is_valid) {
                 invalidSet.insert(ch);
@@ -52,7 +52,7 @@ int safeInputInt(const string& prompt) {
         }
         auto invalidChars = std::string{};
         for (char ch : invalidSet) {
-            unsigned char uch = static_cast<unsigned char>(ch);
+            auto uch = static_cast<unsigned char>(ch);
             if (std::isprint(uch)) {
                 invalidChars.push_back(ch);
             }
