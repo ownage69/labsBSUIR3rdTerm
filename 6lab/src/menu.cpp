@@ -19,8 +19,11 @@ void inputCoefficients(C& eq) {
     catch (const InvalidCharacterException& ex) {
         std::cout << "Поймано исключение в вводе коэффициентов: " << ex.what() << std::endl;
     }
-    catch (const std::exception& ex) {
-        std::cout << "Поймано стандартное исключение: " << ex.what() << std::endl;
+    catch (const std::out_of_range& ex) {
+        std::cout << "Ошибка диапазона: " << ex.what() << std::endl;
+    }
+    catch (const std::invalid_argument& ex) {
+        std::cout << "Ошибка аргумента: " << ex.what() << std::endl;
     }
 }
 
@@ -68,8 +71,11 @@ void runMenu(C& eq) {
         catch (const InvalidCharacterException& ex) {
             std::cout << "Поймано исключение в выборе меню: " << ex.what() << std::endl;
         }
-        catch (const std::exception& ex) {
-            std::cout << "Поймано стандартное исключение: " << ex.what() << std::endl;
+        catch (const std::out_of_range& ex) {
+            std::cout << "Ошибка диапазона: " << ex.what() << std::endl;
+        }
+        catch (const std::invalid_argument& ex) {
+            std::cout << "Ошибка аргумента: " << ex.what() << std::endl;
         }
     }
 }
