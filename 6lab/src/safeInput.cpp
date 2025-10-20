@@ -41,30 +41,24 @@ int safeInputInt(const string& prompt) {
         }
     }
     else {
-        std::set<char> invalidSet;
-        bool first = true;
-        for (char ch : input) {
+        auto invalidSet = std::set<char>{};
+        for (size_t i = 0; i < input.size(); ++i) {
+            char ch = input[i];
             unsigned char uch = static_cast<unsigned char>(ch);
-            if (first) {
-                if (!(uch == '+' || uch == '-' || (uch >= '0' && uch <= '9'))) {
-                    invalidSet.insert(ch);
-                }
-                first = false;
-            }
-            else {
-                if (!(uch >= '0' && uch <= '9')) {
-                    invalidSet.insert(ch);
-                }
+            bool is_valid = (i == 0 && (uch == '+' || uch == '-')) || (uch >= '0' && uch <= '9');
+            if (!is_valid) {
+                invalidSet.insert(ch);
             }
         }
-        std::string invalidChars;
+        auto invalidChars = std::string{};
         for (char ch : invalidSet) {
-            if (std::isprint(static_cast<unsigned char>(ch))) {
+            unsigned char uch = static_cast<unsigned char>(ch);
+            if (std::isprint(uch)) {
                 invalidChars.push_back(ch);
             }
             else {
                 invalidChars += '[';
-                invalidChars += std::to_string(static_cast<unsigned char>(ch));
+                invalidChars += std::to_string(uch);
                 invalidChars += ']';
             }
         }
