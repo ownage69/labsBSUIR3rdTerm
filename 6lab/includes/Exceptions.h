@@ -2,10 +2,12 @@
 #include <exception>
 #include <string>
 
-class InvalidCharacterException : public std::exception {
-    std::string message_;
+using namespace std;
+
+class InvalidCharacterException : public exception {
+    string message_;
 public:
-    InvalidCharacterException(const std::string& input, const std::string& invalidChars) {
+    InvalidCharacterException(const string& input, const string& invalidChars) {
         message_ = "Ошибка ввода: найдены недопустимые символы: '" + invalidChars + "' в строке: \"" + input + "\"";
     }
     const char* what() const noexcept override {
