@@ -1,10 +1,13 @@
 ﻿#include "menu.h"
 #include "safeInput.h"
-#include "Exceptions.h"
+#include "EmptyInputException.h"
+#include "InvalidCharacterException.h"
+#include "OutOfRangeException.h"
+#include "InvalidFormatException.h"
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <cmath> 
+#include <cmath>
 
 void inputCoefficients(C& eq) {
     try {
@@ -16,13 +19,16 @@ void inputCoefficients(C& eq) {
         eq.setC(c);
         std::cout << "Коэффициенты обновлены.\n";
     }
+    catch (const EmptyInputException& ex) {
+        std::cout << "Поймано исключение в вводе коэффициентов: " << ex.what() << std::endl;
+    }
     catch (const InvalidCharacterException& ex) {
         std::cout << "Поймано исключение в вводе коэффициентов: " << ex.what() << std::endl;
     }
-    catch (const std::out_of_range& ex) {
+    catch (const OutOfRangeException& ex) {
         std::cout << "Ошибка диапазона: " << ex.what() << std::endl;
     }
-    catch (const std::invalid_argument& ex) {
+    catch (const InvalidFormatException& ex) {
         std::cout << "Ошибка аргумента: " << ex.what() << std::endl;
     }
 }
@@ -68,13 +74,16 @@ void runMenu(C& eq) {
                 break;
             }
         }
+        catch (const EmptyInputException& ex) {
+            std::cout << "Поймано исключение в выборе меню: " << ex.what() << std::endl;
+        }
         catch (const InvalidCharacterException& ex) {
             std::cout << "Поймано исключение в выборе меню: " << ex.what() << std::endl;
         }
-        catch (const std::out_of_range& ex) {
+        catch (const OutOfRangeException& ex) {
             std::cout << "Ошибка диапазона: " << ex.what() << std::endl;
         }
-        catch (const std::invalid_argument& ex) {
+        catch (const InvalidFormatException& ex) {
             std::cout << "Ошибка аргумента: " << ex.what() << std::endl;
         }
     }
