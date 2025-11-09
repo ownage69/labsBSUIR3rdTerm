@@ -5,10 +5,10 @@
 #include <string_view>
 
 class EmptyInputException : public std::exception {
-    std::string message;
+    std::string message = "Ошибка ввода: строка пустая";
 
 public:
-    explicit EmptyInputException(std::string_view) : message("Ошибка ввода: строка пустая") {}
+    explicit EmptyInputException(std::string_view) {}
     const char* what() const noexcept override {
         return message.c_str();
     }
