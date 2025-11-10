@@ -63,11 +63,11 @@ void runMenu() {
         catch (const std::system_error& e) {
             std::cout << std::format("System error: {}\n", e.what());
         }
-        catch (const std::ios_base::failure& e) {
-            std::cout << std::format("IO error: {}\n", e.what());
-        }
-        catch (const std::exception& e) {
+        catch (const std::exception& e) {  
             std::cout << std::format("Error: {}\n", e.what());
+        }
+        catch (...) {
+            std::cout << "Unknown error occurred.\n";
         }
     } while (choice != 4);
 }
