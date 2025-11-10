@@ -8,24 +8,19 @@
 class CarFile final {
 public:
     explicit CarFile(const std::string& fn);
-
     ~CarFile() noexcept;
 
     CarFile(const CarFile& other);
     CarFile& operator=(const CarFile& other);
-
     CarFile(CarFile&& other) noexcept;
     CarFile& operator=(CarFile&& other) noexcept;
 
     CarFile& operator<<(const Car& car);
-
     CarFile& operator>>(Car& car);
-
     explicit operator bool() const;
 
-    int countByYear(int year);
-
-    void showAll();
+    int countByYear(int year) const;
+    void showAll() const;
 
 private:
     std::unique_ptr<std::fstream> fileStream_;

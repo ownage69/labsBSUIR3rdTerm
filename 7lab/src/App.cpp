@@ -1,8 +1,9 @@
-#include "App.h"
+﻿#include "App.h"
 #include "safeinput.h"
 #include <iostream>
 #include <format>
 #include <stdexcept>
+#include <ios>
 
 void App::run() {
     bool running = true;
@@ -18,19 +19,22 @@ void App::run() {
             handleChoice(choice);
         }
         catch (const std::invalid_argument& e) {
-            std::cout << std::format("Error: {}\n", e.what());
+            std::cout << std::format("Invalid argument: {}\n", e.what());
         }
         catch (const std::out_of_range& e) {
-            std::cout << std::format("Range error: {}\n", e.what());
+            std::cout << std::format("Out of range: {}\n", e.what());
         }
         catch (const std::length_error& e) {
-            std::cout << std::format("File length error: {}\n", e.what());
+            std::cout << std::format("Length error: {}\n", e.what());
         }
         catch (const std::system_error& e) {
             std::cout << std::format("System error: {}\n", e.what());
         }
-        catch (...) {
-            std::cout << "IO error: Failed to perform file operation.\n";
+        catch (const std::ios_base::failure& e) {
+            std::cout << std::format("IO error: {}\n", e.what());
+        }
+        catch (const std::exception& e) {
+            std::cout << std::format("Error: {}\n", e.what());
         }
     }
 }

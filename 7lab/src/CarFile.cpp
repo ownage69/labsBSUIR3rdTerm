@@ -1,14 +1,14 @@
-#include "CarFile.h"
+﻿#include "CarFile.h"
 #include <iostream>
 #include <format>
 #include <ios>
+#include <system_error>
 
 namespace {
     constexpr std::ios_base::openmode FILE_MODE = std::ios::in | std::ios::out | std::ios::binary | std::ios::app;
 }
 
-CarFile::CarFile(const std::string& fn)
-    : fileStream_(nullptr), filename_(fn) {
+CarFile::CarFile(const std::string& fn) : filename_(fn) {
     openFile(filename_);
 }
 
@@ -16,8 +16,7 @@ CarFile::~CarFile() noexcept {
     closeFileSafely();
 }
 
-CarFile::CarFile(const CarFile& other)
-    : filename_(other.filename_) {
+CarFile::CarFile(const CarFile& other) : filename_(other.filename_) {
     openFile(filename_);
 }
 
@@ -46,14 +45,6 @@ CarFile& CarFile::operator=(CarFile&& other) noexcept {
     return *this;
 }
 
-void CarFile::openFile(const std::string& filePath) {
-    fileStream_ = std::make_unique<std::fstream>(filePath, FILE_MODE);
-    validateFileOpen();
-    fileStream_->seekg(0, std::ios::end);
-    fileSize_ = static_cast<std::size_t>(fileStream_->tellg());
-    fileStream_->seekg(0, std::ios::beg);
-}
-
 CarFile& CarFile::operator<<(const Car& car) {
     ensureFileIsOpen();
     fileStream_->seekp(0, std::ios::end);
@@ -69,7 +60,7 @@ CarFile& CarFile::operator<<(const Car& car) {
 CarFile& CarFile::operator>>(Car& car) {
     ensureFileIsOpen();
     car.readFrom(*fileStream_);
-    if (!fileStream_->good()) {
+    if (!fileStream_->good() && !fileStream_->eof()) {
         fileStream_->setstate(std::ios::failbit);
     }
     return *this;
@@ -79,7 +70,7 @@ CarFile::operator bool() const {
     return fileStream_ && fileStream_->good();
 }
 
-int CarFile::countByYear(int year) {
+int CarFile::countByYear(int year) const {
     ensureFileIsOpen();
     fileStream_->clear();
     fileStream_->seekg(0, std::ios::beg);
@@ -95,7 +86,7 @@ int CarFile::countByYear(int year) {
     return count;
 }
 
-void CarFile::showAll() {
+void CarFile::showAll() const {
     ensureFileIsOpen();
     fileStream_->clear();
     fileStream_->seekg(0, std::ios::beg);
@@ -109,9 +100,20 @@ void CarFile::showAll() {
     fileStream_->clear();
 }
 
+void CarFile::openFile(const std::string& filePath) {
+    fileStream_ = std::make_unique<std::fstream>(filePath, FILE_MODE);
+    validateFileOpen();
+    fileStream_->seekg(0, std::ios::end);
+    fileSize_ = static_cast<std::size_t>(fileStream_->tellg());
+    fileStream_->seekg(0, std::ios::beg);
+}
+
 void CarFile::validateFileOpen() const {
     if (!fileStream_ || !fileStream_->is_open()) {
-        throw std::ios_base::failure(std::format("Failed to open file '{}'", filename_));
+        throw std::system_error(
+            std::make_error_code(std::errc::io_error),
+            std::format("Failed to open file '{}'", filename_)
+        );
     }
 }
 

@@ -5,8 +5,8 @@
 #include <istream>
 
 struct Car {
-    int number = 0;          
-    int year = 0;          
+    int number = 0;
+    int year = 0;
     std::string color;
 
     void writeTo(std::ostream& os) const;
