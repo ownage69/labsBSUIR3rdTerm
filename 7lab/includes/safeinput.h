@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 
 void trimInplace(std::string& s);

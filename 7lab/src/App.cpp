@@ -29,8 +29,8 @@ void App::run() {
         catch (const std::system_error& e) {
             std::cout << std::format("System error: {}\n", e.what());
         }
-        catch (const std::ios_base::failure& e) {
-            std::cout << std::format("IO error: {}\n", e.what());
+        catch (...) {
+            std::cout << "IO error: Failed to perform file operation.\n";
         }
     }
 }
@@ -48,17 +48,10 @@ void App::handleChoice(int choice) {
         carFile_ = std::make_unique<CarFile>(filename_);
     }
     switch (choice) {
-    case 1:
-        addCar();
-        break;
-    case 2:
-        showAllCars();
-        break;
-    case 3:
-        countCarsByYear();
-        break;
-    default:
-        throw std::out_of_range("Invalid menu option");
+    case 1: addCar(); break;
+    case 2: showAllCars(); break;
+    case 3: countCarsByYear(); break;
+    default: throw std::out_of_range("Invalid menu option");
     }
 }
 
@@ -66,12 +59,8 @@ void App::addCar() {
     Car car;
     while (true) {
         car.number = safeInputInt("Enter number: ");
-        if (car.number >= 1000 && car.number <= 9999) {
-            break;
-        }
-        else {
-            std::cout << "Error: Number must be exactly 4 digits (1000 to 9999).\n";
-        }
+        if (car.number >= 1000 && car.number <= 9999) break;
+        std::cout << "Error: Number must be exactly 4 digits (1000 to 9999).\n";
     }
     car.year = safeInputInt("Enter year: ");
     car.color = readLineTrimmed("Enter color: ");
