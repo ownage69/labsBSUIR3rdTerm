@@ -1,41 +1,48 @@
 #include "Car.h"
-#include <cstddef>  
+#include <cstddef>     
+#include <cstring>     
+#include <array>
 
 void Car::writeTo(std::ostream& os) const {
-    const std::byte* p = reinterpret_cast<const std::byte*>(&number);
-    os.write(reinterpret_cast<const char*>(p), sizeof(int));
+    std::array<std::byte, sizeof(int)> buffer;
+    std::memcpy(buffer.data(), &number, sizeof(int));
+    os.write(reinterpret_cast<const char*>(buffer.data()), sizeof(int));
 
-    p = reinterpret_cast<const std::byte*>(&year);
-    os.write(reinterpret_cast<const char*>(p), sizeof(int));
+    std::memcpy(buffer.data(), &year, sizeof(int));
+    os.write(reinterpret_cast<const char*>(buffer.data()), sizeof(int));
 
-    size_t len = color.size();
-    p = reinterpret_cast<const std::byte*>(&len);
-    os.write(reinterpret_cast<const char*>(p), sizeof(size_t));
+    const auto len = color.size();
+    std::array<std::byte, sizeof(size_t)> len_buf;
+    std::memcpy(len_buf.data(), &len, sizeof(size_t));
+    os.write(reinterpret_cast<const char*>(len_buf.data()), sizeof(size_t));
 
     if (len > 0) {
-        os.write(reinterpret_cast<const char*>(color.data()), static_cast<std::streamsize>(len));
+        os.write(color.data(), static_cast<std::streamsize>(len));
     }
 }
 
 void Car::readFrom(std::istream& is) {
-    std::byte buf[sizeof(int)];
-    if (!is.read(reinterpret_cast<char*>(buf), sizeof(int))) {
+    std::array<std::byte, sizeof(int)> buffer;
+
+    if (!is.read(reinterpret_cast<char*>(buffer.data()), sizeof(int))) {
         is.setstate(std::ios::failbit);
         return;
     }
-    number = *reinterpret_cast<int*>(buf);
+    std::memcpy(&number, buffer.data(), sizeof(int));
 
-    if (!is.read(reinterpret_cast<char*>(buf), sizeof(int))) {
+    if (!is.read(reinterpret_cast<char*>(buffer.data()), sizeof(int))) {
         is.setstate(std::ios::failbit);
         return;
     }
-    year = *reinterpret_cast<int*>(buf);
+    std::memcpy(&year, buffer.data(), sizeof(int));
 
+    std::array<std::byte, sizeof(size_t)> len_buf;
+    if (!is.read(reinterpret_cast<char*>(len_buf.data()), sizeof(size_t))) {
+        is.setstate(std::ios::failbit);
+        return;
+    }
     size_t len = 0;
-    if (!is.read(reinterpret_cast<char*>(&len), sizeof(size_t))) {
-        is.setstate(std::ios::failbit);
-        return;
-    }
+    std::memcpy(&len, len_buf.data(), sizeof(size_t));
 
     if (len > 1024) {
         is.setstate(std::ios::failbit);

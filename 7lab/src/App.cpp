@@ -4,6 +4,7 @@
 #include <format>
 #include <stdexcept>
 #include <ios>
+#include <system_error>
 
 void App::run() {
     bool running = true;
@@ -30,14 +31,12 @@ void App::run() {
         catch (const std::system_error& e) {
             std::cout << std::format("System error: {}\n", e.what());
         }
-        catch (const std::exception& e) {  
-            std::cout << std::format("Error: {}\n", e.what());
-        }
-        catch (...) {  
-            std::cout << "Unknown error occurred.\n";
+        catch (const std::ios_base::failure& e) {
+            std::cout << std::format("IO error: {}\n", e.what());
         }
     }
 }
+
 void App::showMenu() const {
     std::cout << "\n=== Menu ===\n"
         << "1. Add car\n"
