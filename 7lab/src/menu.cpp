@@ -1,8 +1,9 @@
 #include "menu.h"
 #include "CarFile.h"
+#include "safeinput.h"
 #include <iostream>
-#include <string>
-#include <limits>
+#include <format>
+#include <stdexcept>
 
 void runMenu() {
     const std::string filename = "cars.bin";
@@ -10,46 +11,47 @@ void runMenu() {
 
     int choice;
     do {
-        std::cout << "1. Add car\n";
-        std::cout << "2. Show all cars\n";
-        std::cout << "3. Count cars by year\n";
-        std::cout << "4. Exit\n";
-        std::cout << "Enter choice: ";
-        std::cin >> choice;
+        std::cout << "\n=== Menu ===\n"
+            << "1. Add car\n"
+            << "2. Show all cars\n"
+            << "3. Count cars by year\n"
+            << "4. Exit\n";
 
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        choice = safeInputInt("Enter choice: ");
 
-        switch (choice) {
-        case 1: {
-            Car car;
-            std::cout << "Enter number: ";
-            std::cin >> car.number;
-            std::cout << "Enter year: ";
-            std::cin >> car.year;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
-            std::cout << "Enter color: ";
-            std::getline(std::cin, car.color);
-            cf << car;
-            std::cout << "Car added.\n";
-            break;
+        try {
+            switch (choice) {
+            case 1: {
+                Car car;
+                while (true) {
+                    car.number = safeInputInt("Enter number: ");
+                    if (car.number >= 1000 && car.number <= 9999) break;
+                    std::cout << "Error: Number must be exactly 4 digits (1000 to 9999).\n";
+                }
+                car.year = safeInputInt("Enter year: ");
+                car.color = readLineTrimmed("Enter color: ");
+                cf << car;
+                std::cout << "Car added.\n";
+                break;
+            }
+            case 2:
+                std::cout << "All cars:\n";
+                cf.showAll();
+                break;
+            case 3: {
+                int y = safeInputInt("Enter year: ");
+                std::cout << "Count: " << cf.countByYear(y) << std::endl;
+                break;
+            }
+            case 4:
+                std::cout << "Exiting...\n";
+                break;
+            default:
+                throw std::out_of_range("Invalid menu option");
+            }
         }
-        case 2: {
-            std::cout << "All cars:\n";
-            cf.showAll();
-            break;
-        }
-        case 3: {
-            int y;
-            std::cout << "Enter year: ";
-            std::cin >> y;
-            std::cout << "Count: " << cf.countByYear(y) << std::endl;
-            break;
-        }
-        case 4:
-            std::cout << "Exiting...\n";
-            break;
-        default:
-            std::cout << "Invalid choice.\n";
+        catch (const std::exception& e) {
+            std::cout << std::format("Error: {}\n", e.what());
         }
     } while (choice != 4);
 }
