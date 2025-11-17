@@ -1,7 +1,7 @@
 #pragma once
 
 #include "car.h"
-#include "safeInput.h"
+#include "safeinput.h"
 #include <fstream>
 #include <string>
 
