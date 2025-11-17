@@ -4,9 +4,11 @@
 
 BinaryFile::BinaryFile() : fileName("cars.bin") {}
 BinaryFile::BinaryFile(const std::string& name) : fileName(name) {}
+
 BinaryFile::~BinaryFile() {
     close();
 }
+
 bool BinaryFile::open(bool truncate) {
     if (fileStream.is_open()) {
         close();
@@ -18,14 +20,17 @@ bool BinaryFile::open(bool truncate) {
     fileStream.open(fileName, mode);
     return fileStream.is_open();
 }
+
 void BinaryFile::close() {
     if (fileStream.is_open()) {
         fileStream.close();
     }
 }
+
 bool BinaryFile::isOpen() {
     return fileStream.is_open();
 }
+
 bool BinaryFile::isEmpty() {
     if (!isOpen()) {
         return true;
@@ -35,6 +40,7 @@ bool BinaryFile::isEmpty() {
     fileStream.seekg(0, std::ios::beg);
     return length == 0;
 }
+
 void BinaryFile::show() {
     if (!isOpen()) {
         std::cout << "Error: File is not open.\n";
@@ -56,6 +62,7 @@ void BinaryFile::show() {
     fileStream.clear();
     fileStream.seekg(0, std::ios::beg);
 }
+
 void BinaryFile::writeObject(const Car& car) {
     if (!isOpen()) {
         std::cout << "Error: File is not open.\n";
@@ -64,6 +71,7 @@ void BinaryFile::writeObject(const Car& car) {
     fileStream.seekp(0, std::ios::end);
     fileStream << car;
 }
+
 void BinaryFile::readObject(Car& car) {
     if (!isOpen()) {
         std::cout << "Error: File is not open.\n";
@@ -71,6 +79,7 @@ void BinaryFile::readObject(Car& car) {
     }
     fileStream >> car;
 }
+
 int BinaryFile::findCarsByYear(int year) {
     if (!isOpen()) {
         std::cout << "Error: File is not open.\n";

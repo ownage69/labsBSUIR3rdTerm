@@ -10,8 +10,11 @@ class BinaryFile {
     std::fstream fileStream;
 public:
     BinaryFile();
+
     explicit BinaryFile(const std::string& name);
+
     ~BinaryFile();
+
     bool open(bool truncate = false);
     bool isOpen();
     bool isEmpty();

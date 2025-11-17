@@ -10,6 +10,7 @@ void Menu::printMenu() const {
     std::cout << "4. Erase file data\n";
     std::cout << "5. Quit\n";
 }
+
 void Menu::chooseOperation() {
     if (!file.open()) {
         std::cout << "Error: Failed to open file.\n";
