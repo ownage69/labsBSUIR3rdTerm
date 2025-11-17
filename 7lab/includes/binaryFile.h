@@ -16,7 +16,7 @@ public:
     ~BinaryFile();
 
     bool open(bool truncate = false);
-    bool isOpen();
+    bool isOpen() const;
     bool isEmpty();
     void close();
     void show();

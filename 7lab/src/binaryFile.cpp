@@ -27,7 +27,7 @@ void BinaryFile::close() {
     }
 }
 
-bool BinaryFile::isOpen() {
+bool BinaryFile::isOpen() const {
     return fileStream.is_open();
 }
 
