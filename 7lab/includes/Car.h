@@ -1,21 +1,24 @@
 #pragma once
 
+#include <fstream>
+#include <iostream>
 #include <string>
-#include <ostream>
-#include <istream>
 
-struct Car {
-    int number = 0;
-    int year = 0;
-    std::string color;
-
-    void writeTo(std::ostream& os) const;
-    void readFrom(std::istream& is);
-
-    friend std::ostream& operator<<(std::ostream& os, const Car& car) {
-        os << "Number: " << car.number
-            << ", Year: " << car.year
-            << ", Color: " << car.color;
-        return os;
-    }
+class Car {
+    std::string regNumber;
+    int yearOfRelease;
+    std::string bodyColor;
+public:
+    Car();
+    Car(const std::string& regNumber, int yearOfRelease, const std::string& bodyColor);
+    Car(const Car& car) = default;
+    std::string getRegNumber() const;
+    int getYearOfRelease() const;
+    std::string getBodyColor() const;
+    void input();
+    friend std::fstream& operator>>(std::fstream& in, Car& car);
+    friend std::fstream& operator<<(std::fstream& out, const Car& car);
+    friend std::ostream& operator<<(std::ostream& out, const Car& car);
 };
+
+bool checkCorrectRegNum(const std::string& regNum);

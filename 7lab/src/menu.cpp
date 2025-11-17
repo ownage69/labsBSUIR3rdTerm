@@ -1,73 +1,66 @@
 #include "menu.h"
-#include "CarFile.h"
-#include "safeinput.h"
+#include "safeInput.h"
 #include <iostream>
-#include <format>
-#include <stdexcept>
-#include <ios>
-#include <system_error>
 
-namespace {
-
-    void add_car(CarFile& cf) {
-        Car car;
-        while (true) {
-            car.number = safeInputInt("Enter number: ");
-            if (car.number >= 1000 && car.number <= 9999) break;
-            std::cout << "Error: Number must be exactly 4 digits (1000 to 9999).\n";
+void Menu::printMenu() const {
+    std::cout << "\nOptions:\n";
+    std::cout << "1. Insert a new vehicle into the file\n";
+    std::cout << "2. Display all vehicles from the file\n";
+    std::cout << "3. Calculate vehicles by specific production year\n";
+    std::cout << "4. Erase file data\n";
+    std::cout << "5. Quit\n";
+}
+void Menu::chooseOperation() {
+    if (!file.open()) {
+        std::cout << "Error: Failed to open file.\n";
+        return;
+    }
+    while (true) {
+        printMenu();
+        int choice = safeInputInt("Select an option: ");
+        if (choice < 1 || choice > 5) {
+            std::cout << "Invalid option. Please choose between 1 and 5.\n";
+            continue;
         }
-        car.year = safeInputInt("Enter year: ");
-        car.color = readLineTrimmed("Enter color: ");
-        cf << car;
-        std::cout << "Car added.\n";
-    }
-
-    void show_all(const CarFile& cf) {
-        std::cout << "All cars:\n";
-        cf.showAll();
-    }
-
-    void count_by_year(const CarFile& cf) {
-        int y = safeInputInt("Enter year: ");
-        std::cout << "Count: " << cf.countByYear(y) << std::endl;
-    }
-
-} 
-
-void runMenu() {
-    const std::string filename = "cars.bin";
-    CarFile cf(filename);
-
-    int choice;
-    do {
-        std::cout << "\n=== Menu ===\n"
-            << "1. Add car\n"
-            << "2. Show all cars\n"
-            << "3. Count cars by year\n"
-            << "4. Exit\n";
-
-        choice = safeInputInt("Enter choice: ");
-
-        try {
-            switch (choice) {
-            case 1: add_car(cf); break;
-            case 2: show_all(cf); break;
-            case 3: count_by_year(cf); break;
-            case 4: std::cout << "Exiting...\n"; break;
-            default: throw std::out_of_range("Invalid menu option");
+        switch (choice) {
+        case 1: {
+            Car newCar;
+            newCar.input();
+            file.writeObject(newCar);
+            break;
+        }
+        case 2: {
+            file.show();
+            break;
+        }
+        case 3: {
+            std::cout << "Specify the year to search: ";
+            int findYear;
+            while (true) {
+                findYear = safeInputInt("");
+                if (findYear >= 1888 && findYear <= 2025) {
+                    break;
+                }
+                std::cout << "Year must be between 1888 and 2025. Try again.\n";
             }
+            std::cout << "Number of vehicles produced in that year: " << file.findCarsByYear(findYear) << std::endl;
+            break;
         }
-        catch (const std::invalid_argument& e) {
-            std::cout << std::format("Invalid argument: {}\n", e.what());
+        case 4: {
+            file.close();
+            if (file.open(true)) {
+                std::cout << "File cleared successfully.\n";
+            }
+            else {
+                std::cout << "Error: Failed to clear file.\n";
+            }
+            break;
         }
-        catch (const std::out_of_range& e) {
-            std::cout << std::format("Out of range: {}\n", e.what());
+        case 5:
+            return;
         }
-        catch (const std::system_error& e) {
-            std::cout << std::format("System error: {}\n", e.what());
-        }
-        catch (const std::ios_base::failure& e) {
-            std::cout << std::format("IO error: {}\n", e.what());
-        }
-    } while (choice != 4);
+    }
+}
+void Menu::start() {
+    chooseOperation();
 }

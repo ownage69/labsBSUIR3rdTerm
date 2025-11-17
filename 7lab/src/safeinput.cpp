@@ -1,43 +1,70 @@
-#include "safeinput.h"
+#include "safeInput.h"
 #include <iostream>
+#include <string>
 #include <regex>
-#include <format>
-#include <stdexcept>
 #include <cctype>
 #include <limits>
 
-void trimInplace(std::string& s) {
-    while (!s.empty() && std::isspace(static_cast<unsigned char>(s.front())))
+using std::string;
+using std::cout;
+using std::cin;
+using std::getline;
+
+inline void trimInPlace(string& s) {
+    while (!s.empty() && isspace(static_cast<unsigned char>(s.front())))
         s.erase(s.begin());
-    while (!s.empty() && std::isspace(static_cast<unsigned char>(s.back())))
+    while (!s.empty() && isspace(static_cast<unsigned char>(s.back())))
         s.pop_back();
 }
-
-std::string readLineTrimmed(const std::string& prompt) {
-    std::string input;
-    std::cout << prompt;
-    std::getline(std::cin, input);
-    trimInplace(input);
+string readLineTrimmed(const string& prompt) {
+    string input;
+    cout << prompt;
+    getline(cin, input);
+    trimInPlace(input);
     return input;
 }
-
-int safeInputInt(const std::string& prompt) {
-    const std::regex pattern(R"(^[+-]?\d+$)");
+int safeInputInt(const string& prompt) {
+    std::regex pat(R"(^[+-]?\d+$)");
     while (true) {
-        std::string input = readLineTrimmed(prompt);
-        if (!input.empty() && std::regex_match(input, pattern)) {
+        string input = readLineTrimmed(prompt);
+        if (!input.empty() && std::regex_match(input, pat)) {
             try {
                 return std::stoi(input);
             }
             catch (const std::invalid_argument&) {
-                std::cout << std::format("Invalid input '{}'. Please enter a number.\n", input);
+                cout << "Invalid input. Enter a number.\n";
             }
             catch (const std::out_of_range&) {
-                std::cout << std::format("Number '{}' is out of int range.\n", input);
+                cout << "Number out of int range. Try again.\n";
             }
         }
         else {
-            std::cout << "Error: enter an integer (optionally with + or - sign).\n";
+            cout << "Invalid input. Enter an integer.\n";
         }
+    }
+}
+int safePositiveInputInt(const string& prompt) {
+    while (true) {
+        int number = safeInputInt(prompt);
+        if (number > 0)
+            return number;
+        cout << "Number must be positive.\n";
+    }
+}
+int safeNonNegativeInputInt(const string& prompt) {
+    while (true) {
+        int number = safeInputInt(prompt);
+        if (number >= 0)
+            return number;
+        cout << "Number must be non-negative.\n";
+    }
+}
+std::string safeInputString(const std::string& prompt) {
+    while (true) {
+        std::string input = readLineTrimmed(prompt);
+        if (!input.empty()) {
+            return input;
+        }
+        cout << "Input cannot be empty.\n";
     }
 }

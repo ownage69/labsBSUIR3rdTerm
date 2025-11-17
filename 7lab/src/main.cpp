@@ -1,7 +1,7 @@
-#include "App.h"
+#include "menu.h"
 
 int main() {
-    App app;
-    app.run();
+    Menu menu;
+    menu.start();
     return 0;
 }

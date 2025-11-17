@@ -1,57 +1,96 @@
-#include "Car.h"
-#include <cstddef>     
-#include <cstring>     
-#include <array>
+#include "car.h"
+#include "safeInput.h"
+#include <iomanip>
+#include <limits>
 
-void Car::writeTo(std::ostream& os) const {
-    std::array<std::byte, sizeof(int)> buffer;
-    std::memcpy(buffer.data(), &number, sizeof(int));
-    os.write(reinterpret_cast<const char*>(buffer.data()), sizeof(int));
+constexpr size_t MAX_STR_SIZE = 1024;
 
-    std::memcpy(buffer.data(), &year, sizeof(int));
-    os.write(reinterpret_cast<const char*>(buffer.data()), sizeof(int));
-
-    const auto len = color.size();
-    std::array<std::byte, sizeof(size_t)> len_buf;
-    std::memcpy(len_buf.data(), &len, sizeof(size_t));
-    os.write(reinterpret_cast<const char*>(len_buf.data()), sizeof(size_t));
-
-    if (len > 0) {
-        os.write(color.data(), static_cast<std::streamsize>(len));
-    }
+Car::Car() : regNumber("1111 AA-1"), yearOfRelease(1900), bodyColor("black") {}
+Car::Car(const std::string& regNumber, int yearOfRelease, const std::string& bodyColor)
+    : regNumber(regNumber), yearOfRelease(yearOfRelease), bodyColor(bodyColor) {
 }
-
-void Car::readFrom(std::istream& is) {
-    std::array<std::byte, sizeof(int)> buffer;
-
-    if (!is.read(reinterpret_cast<char*>(buffer.data()), sizeof(int))) {
-        is.setstate(std::ios::failbit);
-        return;
+std::string Car::getRegNumber() const {
+    return regNumber;
+}
+int Car::getYearOfRelease() const {
+    return yearOfRelease;
+}
+std::string Car::getBodyColor() const {
+    return bodyColor;
+}
+void Car::input() {
+    std::cout << "Creating a new vehicle:\n";
+    while (true) {
+        regNumber = safeInputString("Enter vehicle registration number (e.g., 5678 BC-2):\n");
+        if (checkCorrectRegNum(regNumber)) {
+            break;
+        }
+        std::cout << "Invalid registration number format. Please try again.\n";
     }
-    std::memcpy(&number, buffer.data(), sizeof(int));
-
-    if (!is.read(reinterpret_cast<char*>(buffer.data()), sizeof(int))) {
-        is.setstate(std::ios::failbit);
-        return;
+    while (true) {
+        yearOfRelease = safeInputInt("Enter the vehicle's production year (between 1888 and 2025):\n");
+        if (yearOfRelease >= 1888 && yearOfRelease <= 2025) {
+            break;
+        }
+        std::cout << "Year must be between 1888 and 2025. Please try again.\n";
     }
-    std::memcpy(&year, buffer.data(), sizeof(int));
-
-    std::array<std::byte, sizeof(size_t)> len_buf;
-    if (!is.read(reinterpret_cast<char*>(len_buf.data()), sizeof(size_t))) {
-        is.setstate(std::ios::failbit);
-        return;
+    bodyColor = safeInputString("Enter the body color (e.g., silver, blue, green):\n");
+    std::cout << "New vehicle added successfully.\n";
+}
+std::ostream& operator<<(std::ostream& out, const Car& car) {
+    out << "| Reg number: " << car.regNumber
+        << " | Production year: " << car.yearOfRelease
+        << " | Color: " << std::setw(12) << car.bodyColor << " |\n";
+    return out;
+}
+std::fstream& operator>>(std::fstream& in, Car& car) {
+    size_t regNumberSize;
+    if (!in.read(reinterpret_cast<char*>(&regNumberSize), sizeof(regNumberSize)) || regNumberSize > MAX_STR_SIZE) {
+        in.setstate(std::ios::failbit);
+        return in;
     }
-    size_t len = 0;
-    std::memcpy(&len, len_buf.data(), sizeof(size_t));
-
-    if (len > 1024) {
-        is.setstate(std::ios::failbit);
-        return;
+    car.regNumber.resize(regNumberSize);
+    if (!in.read(&car.regNumber[0], regNumberSize)) {
+        in.setstate(std::ios::failbit);
+        return in;
     }
-
-    color.resize(len);
-    if (len > 0 && !is.read(&color[0], static_cast<std::streamsize>(len))) {
-        is.setstate(std::ios::failbit);
-        return;
+    if (!in.read(reinterpret_cast<char*>(&car.yearOfRelease), sizeof(car.yearOfRelease))) {
+        in.setstate(std::ios::failbit);
+        return in;
     }
+    size_t colorSize;
+    if (!in.read(reinterpret_cast<char*>(&colorSize), sizeof(colorSize)) || colorSize > MAX_STR_SIZE) {
+        in.setstate(std::ios::failbit);
+        return in;
+    }
+    car.bodyColor.resize(colorSize);
+    if (!in.read(&car.bodyColor[0], colorSize)) {
+        in.setstate(std::ios::failbit);
+        return in;
+    }
+    return in;
+}
+std::fstream& operator<<(std::fstream& out, const Car& car) {
+    size_t regNumberSize = car.regNumber.size();
+    out.write(reinterpret_cast<const char*>(&regNumberSize), sizeof(regNumberSize));
+    out.write(car.regNumber.c_str(), regNumberSize);
+    out.write(reinterpret_cast<const char*>(&car.yearOfRelease), sizeof(int));
+    size_t colorSize = car.bodyColor.size();
+    out.write(reinterpret_cast<const char*>(&colorSize), sizeof(colorSize));
+    out.write(car.bodyColor.c_str(), colorSize);
+    out.flush();
+    return out;
+}
+bool checkCorrectRegNum(const std::string& regNum) {
+    if (regNum.length() != 9 || regNum[4] != ' ' || regNum[7] != '-' ||
+        !(regNum[5] >= 'A' && regNum[5] <= 'Z') || !(regNum[6] >= 'A' && regNum[6] <= 'Z') ||
+        !(regNum[8] >= '0' && regNum[8] <= '9')) {
+        return false;
+    }
+    for (int i = 0; i < 4; ++i) {
+        if (!(regNum[i] >= '0' && regNum[i] <= '9')) {
+            return false;
+        }
+    }
+    return true;
 }

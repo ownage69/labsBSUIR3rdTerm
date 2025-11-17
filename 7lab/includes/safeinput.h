@@ -2,8 +2,8 @@
 
 #include <string>
 
-void trimInplace(std::string& s);
-
 std::string readLineTrimmed(const std::string& prompt);
-
 int safeInputInt(const std::string& prompt);
+int safePositiveInputInt(const std::string& prompt);
+int safeNonNegativeInputInt(const std::string& prompt);
+std::string safeInputString(const std::string& prompt);
