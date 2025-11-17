@@ -45,24 +45,23 @@ int safeInputInt(const string& prompt) {
 }
 int safePositiveInputInt(const string& prompt) {
     while (true) {
-        int number = safeInputInt(prompt);
-        if (number > 0)
+        if (int number = safeInputInt(prompt); number > 0) {
             return number;
+        }
         cout << "Number must be positive.\n";
     }
 }
 int safeNonNegativeInputInt(const string& prompt) {
     while (true) {
-        int number = safeInputInt(prompt);
-        if (number >= 0)
+        if (int number = safeInputInt(prompt); number >= 0) {
             return number;
+        }
         cout << "Number must be non-negative.\n";
     }
 }
 std::string safeInputString(const std::string& prompt) {
     while (true) {
-        std::string input = readLineTrimmed(prompt);
-        if (!input.empty()) {
+        if (std::string input = readLineTrimmed(prompt); !input.empty()) {
             return input;
         }
         cout << "Input cannot be empty.\n";

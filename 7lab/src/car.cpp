@@ -41,44 +41,39 @@ void Car::input() {
     std::cout << "New vehicle added successfully.\n";
 }
 
-std::fstream& operator>>(std::fstream& in, Car& car) {
+bool Car::readFromStream(std::fstream& in) {
     size_t regNumberSize;
     if (!in.read(reinterpret_cast<char*>(&regNumberSize), sizeof(regNumberSize)) || regNumberSize > MAX_STR_SIZE) {
-        in.setstate(std::ios::failbit);
-        return in;
+        return false;
     }
-    car.regNumber.resize(regNumberSize);
-    if (!in.read(&car.regNumber[0], static_cast<std::streamsize>(regNumberSize))) {
-        in.setstate(std::ios::failbit);
-        return in;
+    regNumber.resize(regNumberSize);
+    if (!in.read(&regNumber[0], static_cast<std::streamsize>(regNumberSize))) {
+        return false;
     }
-    if (!in.read(reinterpret_cast<char*>(&car.yearOfRelease), sizeof(car.yearOfRelease))) {
-        in.setstate(std::ios::failbit);
-        return in;
+    if (!in.read(reinterpret_cast<char*>(&yearOfRelease), sizeof(yearOfRelease))) {
+        return false;
     }
     size_t colorSize;
     if (!in.read(reinterpret_cast<char*>(&colorSize), sizeof(colorSize)) || colorSize > MAX_STR_SIZE) {
-        in.setstate(std::ios::failbit);
-        return in;
+        return false;
     }
-    car.bodyColor.resize(colorSize);
-    if (!in.read(&car.bodyColor[0], static_cast<std::streamsize>(colorSize))) {
-        in.setstate(std::ios::failbit);
-        return in;
+    bodyColor.resize(colorSize);
+    if (!in.read(&bodyColor[0], static_cast<std::streamsize>(colorSize))) {
+        return false;
     }
-    return in;
+    return true;
 }
 
-std::fstream& operator<<(std::fstream& out, const Car& car) {
-    size_t regNumberSize = car.regNumber.size();
-    out.write(reinterpret_cast<const char*>(&regNumberSize), sizeof(regNumberSize));
-    out.write(car.regNumber.c_str(), static_cast<std::streamsize>(regNumberSize));
-    out.write(reinterpret_cast<const char*>(&car.yearOfRelease), sizeof(car.yearOfRelease));
-    size_t colorSize = car.bodyColor.size();
-    out.write(reinterpret_cast<const char*>(&colorSize), sizeof(colorSize));
-    out.write(car.bodyColor.c_str(), static_cast<std::streamsize>(colorSize));
+bool Car::writeToStream(std::fstream& out) const {
+    size_t regNumberSize = regNumber.size();
+    if (!out.write(reinterpret_cast<const char*>(&regNumberSize), sizeof(regNumberSize))) return false;
+    if (!out.write(regNumber.c_str(), static_cast<std::streamsize>(regNumberSize))) return false;
+    if (!out.write(reinterpret_cast<const char*>(&yearOfRelease), sizeof(yearOfRelease))) return false;
+    size_t colorSize = bodyColor.size();
+    if (!out.write(reinterpret_cast<const char*>(&colorSize), sizeof(colorSize))) return false;
+    if (!out.write(bodyColor.c_str(), static_cast<std::streamsize>(colorSize))) return false;
     out.flush();
-    return out;
+    return true;
 }
 
 bool checkCorrectRegNum(const std::string& regNum) {

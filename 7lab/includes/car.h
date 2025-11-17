@@ -10,6 +10,9 @@ class Car {
     int yearOfRelease;
     std::string bodyColor;
 
+    bool readFromStream(std::fstream& in);
+    bool writeToStream(std::fstream& out) const;
+
 public:
     Car();
     Car(const std::string& regNumber, int yearOfRelease, const std::string& bodyColor);
@@ -29,8 +32,18 @@ public:
         return out;
     }
 
-    friend std::fstream& operator>>(std::fstream& in, Car& car);
-    friend std::fstream& operator<<(std::fstream& out, const Car& car);
+    friend std::fstream& operator>>(std::fstream& in, Car& car) {
+        if (!car.readFromStream(in)) {
+            in.setstate(std::ios::failbit);
+        }
+        return in;
+    }
+    friend std::fstream& operator<<(std::fstream& out, const Car& car) {
+        if (!car.writeToStream(out)) {
+            out.setstate(std::ios::failbit);
+        }
+        return out;
+    }
 };
 
 bool checkCorrectRegNum(const std::string& regNum);
