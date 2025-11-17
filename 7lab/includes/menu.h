@@ -7,6 +7,11 @@ class Menu {
     void printMenu() const;
     void chooseOperation();
 
+    void insertCar();
+    void displayCars();
+    void countByYear();
+    void clearFile();
+
 public:
     void start();
 };
