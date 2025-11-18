@@ -3,7 +3,6 @@
 #include <iomanip>
 #include <limits>
 #include <cstring>
-#include <cstddef>
 
 constexpr size_t MAX_STR_SIZE = 1024;
 
@@ -43,75 +42,39 @@ void Car::input() {
 }
 
 bool Car::readFromStream(std::fstream& in) {
-    std::byte sizeBuf1[sizeof(size_t)];
-    if (!in.read(reinterpret_cast<char*>(sizeBuf1), sizeof(size_t)))
+    size_t regNumberSize;
+    if (!in.read(reinterpret_cast<char*>(&regNumberSize), sizeof(regNumberSize)) || regNumberSize > MAX_STR_SIZE) {
         return false;
-
-    size_t regNumberSize = 0;
-    std::memcpy(&regNumberSize, sizeBuf1, sizeof(size_t));
-
-    if (regNumberSize > MAX_STR_SIZE)
-        return false;
-
+    }
     regNumber.resize(regNumberSize);
-    if (!in.read(regNumber.data(), static_cast<std::streamsize>(regNumberSize)))
+    if (!in.read(&regNumber[0], static_cast<std::streamsize>(regNumberSize))) {
         return false;
-
-    std::byte yearBuf[sizeof(int)];
-    if (!in.read(reinterpret_cast<char*>(yearBuf), sizeof(int)))
+    }
+    if (!in.read(reinterpret_cast<char*>(&yearOfRelease), sizeof(yearOfRelease))) {
         return false;
-
-    std::memcpy(&yearOfRelease, yearBuf, sizeof(int));
-
-    std::byte sizeBuf2[sizeof(size_t)];
-    if (!in.read(reinterpret_cast<char*>(sizeBuf2), sizeof(size_t)))
+    }
+    size_t colorSize;
+    if (!in.read(reinterpret_cast<char*>(&colorSize), sizeof(colorSize)) || colorSize > MAX_STR_SIZE) {
         return false;
-
-    size_t colorSize = 0;
-    std::memcpy(&colorSize, sizeBuf2, sizeof(size_t));
-
-    if (colorSize > MAX_STR_SIZE)
-        return false;
-
+    }
     bodyColor.resize(colorSize);
-    if (!in.read(bodyColor.data(), static_cast<std::streamsize>(colorSize)))
+    if (!in.read(&bodyColor[0], static_cast<std::streamsize>(colorSize))) {
         return false;
-
+    }
     return true;
 }
-
 
 bool Car::writeToStream(std::fstream& out) const {
     size_t regNumberSize = regNumber.size();
-    std::byte sizeBuf1[sizeof(size_t)];
-    std::memcpy(sizeBuf1, &regNumberSize, sizeof(size_t));
-
-    if (!out.write(reinterpret_cast<const char*>(sizeBuf1), sizeof(size_t)))
-        return false;
-
-    if (!out.write(regNumber.data(), static_cast<std::streamsize>(regNumberSize)))
-        return false;
-
-    std::byte yearBuf[sizeof(int)];
-    std::memcpy(yearBuf, &yearOfRelease, sizeof(int));
-
-    if (!out.write(reinterpret_cast<const char*>(yearBuf), sizeof(int)))
-        return false;
-
+    if (!out.write(reinterpret_cast<const char*>(&regNumberSize), sizeof(regNumberSize))) return false;
+    if (!out.write(regNumber.c_str(), static_cast<std::streamsize>(regNumberSize))) return false;
+    if (!out.write(reinterpret_cast<const char*>(&yearOfRelease), sizeof(yearOfRelease))) return false;
     size_t colorSize = bodyColor.size();
-    std::byte sizeBuf2[sizeof(size_t)];
-    std::memcpy(sizeBuf2, &colorSize, sizeof(size_t));
-
-    if (!out.write(reinterpret_cast<const char*>(sizeBuf2), sizeof(size_t)))
-        return false;
-
-    if (!out.write(bodyColor.data(), static_cast<std::streamsize>(colorSize)))
-        return false;
-
+    if (!out.write(reinterpret_cast<const char*>(&colorSize), sizeof(colorSize))) return false;
+    if (!out.write(bodyColor.c_str(), static_cast<std::streamsize>(colorSize))) return false;
     out.flush();
     return true;
 }
-
 
 bool checkCorrectRegNum(const std::string& regNum) {
     if (regNum.length() != 9 || regNum[4] != ' ' || regNum[7] != '-' ||
