@@ -44,16 +44,15 @@ jobs:
           echo "$sonarScannerPath\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Build with MSBuild
-        run: |
-          cd 8lab
-          msbuild 8lab.sln /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:RunCodeAnalysis=true /p:CodeAnalysisRuleSet="MinimumRecommendedRules.ruleset"
+        working-directory: 8lab
+        run: msbuild 8lab.sln /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:RunCodeAnalysis=true /p:CodeAnalysisRuleSet="MinimumRecommendedRules.ruleset"
 
       - name: SonarCloud Scan
+        working-directory: 8lab
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd 8lab
           sonar-scanner.bat `
             -Dsonar.projectKey=ownage69_labsBSUIR3rdTerm `
             -Dsonar.organization=ownage69 `
