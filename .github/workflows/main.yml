@@ -20,21 +20,41 @@ jobs:
       - name: Set up MSBuild
         uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce
 
-      - name: SonarCloud Prepare Analysis
-        uses: SonarSource/sonarcloud-github-action@e44258b109568baa0df60ed515909fc6c72cba92
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Set up JDK
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00
         with:
-          args: >
-            -Dsonar.projectKey=ownage69_labsBSUIR3rdTerm
-            -Dsonar.organization=ownage69
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Download and setup SonarScanner
+        run: |
+          $sonarScannerVersion = "5.0.1.3006"
+          $sonarScannerZip = "sonar-scanner-cli-$sonarScannerVersion-windows.zip"
+          $sonarScannerUrl = "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/$sonarScannerZip"
+          Invoke-WebRequest -Uri $sonarScannerUrl -OutFile $sonarScannerZip
+          Expand-Archive -Path $sonarScannerZip -DestinationPath .
+          $sonarScannerPath = (Resolve-Path "sonar-scanner-$sonarScannerVersion-windows").Path
+          echo "$sonarScannerPath\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Build with MSBuild
-        run: msbuild 8lab/8lab.sln /t:Rebuild /p:Configuration=Release /p:Platform=x64
+        run: |
+          cd 8lab
+          msbuild 8lab.sln /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:RunCodeAnalysis=true /p:CodeAnalysisRuleSet="MinimumRecommendedRules.ruleset"
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@e44258b109568baa0df60ed515909fc6c72cba92
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd 8lab
+          sonar-scanner.bat `
+            -Dsonar.projectKey=ownage69_labsBSUIR3rdTerm `
+            -Dsonar.organization=ownage69 `
+            -Dproject.settings=sonar-project.properties
