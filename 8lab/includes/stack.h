@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstddef>
+#include <compare>
 
 template <typename T>
 class Stack
@@ -55,46 +56,22 @@ class Stack
         return true;
     }
 
-    friend bool operator!=(const Stack &left, const Stack &right) 
-    { 
-        return !(left == right); 
-    }
-
-    friend bool operator<(const Stack &left, const Stack &right)
+    friend auto operator<=>(const Stack &left, const Stack &right)
     {
         StackNode *node1 = left.topElement;
         StackNode *node2 = right.topElement;
 
         while (node1 && node2)
         {
-            if (node1->value < node2->value)
+            if (auto cmp = node1->value <=> node2->value; cmp != 0)
             {
-                return true;
-            }
-            if (node2->value < node1->value)
-            {
-                return false;
+                return cmp;
             }
             node1 = node1->nextNode;
             node2 = node2->nextNode;
         }
 
-        return left.elementCount < right.elementCount;
-    }
-
-    friend bool operator<=(const Stack &left, const Stack &right) 
-    { 
-        return !(right < left); 
-    }
-
-    friend bool operator>(const Stack &left, const Stack &right) 
-    { 
-        return right < left; 
-    }
-
-    friend bool operator>=(const Stack &left, const Stack &right) 
-    { 
-        return !(left < right); 
+        return left.elementCount <=> right.elementCount;
     }
 
     void swap(Stack &other) noexcept;
@@ -110,15 +87,7 @@ class Stack
         T &operator*() const;
         StackIterator &operator++();
 
-        friend bool operator!=(const StackIterator &left, const StackIterator &right)
-        {
-            return left.currentNode != right.currentNode;
-        }
-
-        friend bool operator==(const StackIterator &left, const StackIterator &right)
-        {
-            return left.currentNode == right.currentNode;
-        }
+        friend bool operator==(const StackIterator &left, const StackIterator &right) = default;
     };
 
     StackIterator begin() const;
