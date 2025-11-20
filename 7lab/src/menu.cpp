@@ -23,8 +23,8 @@ void Menu::displayCars() {
 
 void Menu::countByYear() {
     int findYear = safeInputInt("Specify the year to search: ");
-    while (findYear < 1888 || findYear > 2025) {
-        std::cout << "Year must be between 1888 and 2025. Try again.\n";
+    while (findYear < 1990 || findYear > 2025) {
+        std::cout << "Year must be between 1990 and 2025. Try again.\n";
         findYear = safeInputInt("");
     }
     std::cout << "Number of vehicles produced in that year: "
