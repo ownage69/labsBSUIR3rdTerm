@@ -1,0 +1,49 @@
+# SonarCloud configuration file
+# This file can be used for local analysis or CI/CD integration
+
+project:
+  key: 8lab
+  name: 8lab Stack Implementation
+  version: 1.0
+
+# Source directories
+sources:
+  - src
+  - includes
+
+# Exclude patterns
+exclusions:
+  - "**/x64/**"
+  - "**/8lab/**"
+  - "**/*.obj"
+  - "**/*.pdb"
+  - "**/*.exe"
+  - "**/*.ilk"
+  - "**/*.log"
+  - "**/*.tlog/**"
+  - "**/*.idb"
+  - "**/*.vcxproj"
+  - "**/*.vcxproj.user"
+  - "**/*.sln"
+  - "**/*.filters"
+
+# Language settings
+language: cpp
+
+# File extensions
+file.suffixes:
+  - .cpp
+  - .cxx
+  - .cc
+  - .c
+  - .hpp
+  - .h
+  - .hxx
+
+# Include directories
+include.directories:
+  - includes
+
+# Encoding
+encoding: UTF-8
+
