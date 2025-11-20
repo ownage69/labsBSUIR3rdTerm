@@ -15,9 +15,9 @@ class StackAlgorithms
 template <typename T>
 bool StackAlgorithms<T>::findElement(const Stack<T> &stack, const T &value)
 {
-    // NOSONAR: cpp:S5566 - Using std::find instead of std::ranges::find 
+    // NOSONAR cpp:S5566 - Using std::find instead of std::ranges::find 
     // because our custom container doesn't fully support ranges API in current implementation
-    return std::find(stack.begin(), stack.end(), value) != stack.end();
+    return std::find(stack.begin(), stack.end(), value) != stack.end(); // NOSONAR
 }
 
 template <typename T>
