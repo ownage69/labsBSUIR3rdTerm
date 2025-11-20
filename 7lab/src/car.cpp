@@ -44,22 +44,27 @@ void Car::input() {
 
 bool Car::readFromStream(std::fstream& in) {
     size_t regNumberSize;
-    if (!in.read(reinterpret_cast<char*>(static_cast<std::byte*>(static_cast<void*>(&regNumberSize))), sizeof(regNumberSize)) || regNumberSize > MAX_STR_SIZE) {
+    std::byte* regNumberSizeBytes = reinterpret_cast<std::byte*>(&regNumberSize);
+    if (!in.read(reinterpret_cast<char*>(regNumberSizeBytes), sizeof(regNumberSize)) || regNumberSize > MAX_STR_SIZE) {
         return false;
     }
     regNumber.resize(regNumberSize);
-    if (!in.read(reinterpret_cast<char*>(static_cast<std::byte*>(static_cast<void*>(&regNumber[0]))), static_cast<std::streamsize>(regNumberSize))) {
+    std::byte* regNumberBytes = reinterpret_cast<std::byte*>(&regNumber[0]);
+    if (!in.read(reinterpret_cast<char*>(regNumberBytes), static_cast<std::streamsize>(regNumberSize))) {
         return false;
     }
-    if (!in.read(reinterpret_cast<char*>(static_cast<std::byte*>(static_cast<void*>(&yearOfRelease))), sizeof(yearOfRelease))) {
+    std::byte* yearBytes = reinterpret_cast<std::byte*>(&yearOfRelease);
+    if (!in.read(reinterpret_cast<char*>(yearBytes), sizeof(yearOfRelease))) {
         return false;
     }
     size_t colorSize;
-    if (!in.read(reinterpret_cast<char*>(static_cast<std::byte*>(static_cast<void*>(&colorSize))), sizeof(colorSize)) || colorSize > MAX_STR_SIZE) {
+    std::byte* colorSizeBytes = reinterpret_cast<std::byte*>(&colorSize);
+    if (!in.read(reinterpret_cast<char*>(colorSizeBytes), sizeof(colorSize)) || colorSize > MAX_STR_SIZE) {
         return false;
     }
     bodyColor.resize(colorSize);
-    if (!in.read(reinterpret_cast<char*>(static_cast<std::byte*>(static_cast<void*>(&bodyColor[0]))), static_cast<std::streamsize>(colorSize))) {
+    std::byte* colorBytes = reinterpret_cast<std::byte*>(&bodyColor[0]);
+    if (!in.read(reinterpret_cast<char*>(colorBytes), static_cast<std::streamsize>(colorSize))) {
         return false;
     }
     return true;
@@ -67,12 +72,17 @@ bool Car::readFromStream(std::fstream& in) {
 
 bool Car::writeToStream(std::fstream& out) const {
     size_t regNumberSize = regNumber.size();
-    if (!out.write(reinterpret_cast<const char*>(static_cast<const std::byte*>(static_cast<const void*>(&regNumberSize))), sizeof(regNumberSize))) return false;
-    if (!out.write(reinterpret_cast<const char*>(static_cast<const std::byte*>(static_cast<const void*>(regNumber.c_str()))), static_cast<std::streamsize>(regNumberSize))) return false;
-    if (!out.write(reinterpret_cast<const char*>(static_cast<const std::byte*>(static_cast<const void*>(&yearOfRelease))), sizeof(yearOfRelease))) return false;
+    const std::byte* regNumberSizeBytes = reinterpret_cast<const std::byte*>(&regNumberSize);
+    if (!out.write(reinterpret_cast<const char*>(regNumberSizeBytes), sizeof(regNumberSize))) return false;
+    const std::byte* regNumberBytes = reinterpret_cast<const std::byte*>(regNumber.c_str());
+    if (!out.write(reinterpret_cast<const char*>(regNumberBytes), static_cast<std::streamsize>(regNumberSize))) return false;
+    const std::byte* yearBytes = reinterpret_cast<const std::byte*>(&yearOfRelease);
+    if (!out.write(reinterpret_cast<const char*>(yearBytes), sizeof(yearOfRelease))) return false;
     size_t colorSize = bodyColor.size();
-    if (!out.write(reinterpret_cast<const char*>(static_cast<const std::byte*>(static_cast<const void*>(&colorSize))), sizeof(colorSize))) return false;
-    if (!out.write(reinterpret_cast<const char*>(static_cast<const std::byte*>(static_cast<const void*>(bodyColor.c_str()))), static_cast<std::streamsize>(colorSize))) return false;
+    const std::byte* colorSizeBytes = reinterpret_cast<const std::byte*>(&colorSize);
+    if (!out.write(reinterpret_cast<const char*>(colorSizeBytes), sizeof(colorSize))) return false;
+    const std::byte* colorBytes = reinterpret_cast<const std::byte*>(bodyColor.c_str());
+    if (!out.write(reinterpret_cast<const char*>(colorBytes), static_cast<std::streamsize>(colorSize))) return false;
     out.flush();
     return true;
 }
