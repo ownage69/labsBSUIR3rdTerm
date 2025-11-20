@@ -44,27 +44,27 @@ void Car::input() {
 
 bool Car::readFromStream(std::fstream& in) {
     size_t regNumberSize;
-    std::byte* regNumberSizeBytes = reinterpret_cast<std::byte*>(&regNumberSize);
-    if (!in.read(reinterpret_cast<char*>(regNumberSizeBytes), sizeof(regNumberSize)) || regNumberSize > MAX_STR_SIZE) {
+    if (auto regNumberSizeBytes = reinterpret_cast<std::byte*>(&regNumberSize);
+        !in.read(reinterpret_cast<char*>(regNumberSizeBytes), sizeof(regNumberSize)) || regNumberSize > MAX_STR_SIZE) {
         return false;
     }
     regNumber.resize(regNumberSize);
-    std::byte* regNumberBytes = reinterpret_cast<std::byte*>(&regNumber[0]);
-    if (!in.read(reinterpret_cast<char*>(regNumberBytes), static_cast<std::streamsize>(regNumberSize))) {
+    if (auto regNumberBytes = reinterpret_cast<std::byte*>(&regNumber[0]);
+        !in.read(reinterpret_cast<char*>(regNumberBytes), static_cast<std::streamsize>(regNumberSize))) {
         return false;
     }
-    std::byte* yearBytes = reinterpret_cast<std::byte*>(&yearOfRelease);
-    if (!in.read(reinterpret_cast<char*>(yearBytes), sizeof(yearOfRelease))) {
+    if (auto yearBytes = reinterpret_cast<std::byte*>(&yearOfRelease);
+        !in.read(reinterpret_cast<char*>(yearBytes), sizeof(yearOfRelease))) {
         return false;
     }
     size_t colorSize;
-    std::byte* colorSizeBytes = reinterpret_cast<std::byte*>(&colorSize);
-    if (!in.read(reinterpret_cast<char*>(colorSizeBytes), sizeof(colorSize)) || colorSize > MAX_STR_SIZE) {
+    if (auto colorSizeBytes = reinterpret_cast<std::byte*>(&colorSize);
+        !in.read(reinterpret_cast<char*>(colorSizeBytes), sizeof(colorSize)) || colorSize > MAX_STR_SIZE) {
         return false;
     }
     bodyColor.resize(colorSize);
-    std::byte* colorBytes = reinterpret_cast<std::byte*>(&bodyColor[0]);
-    if (!in.read(reinterpret_cast<char*>(colorBytes), static_cast<std::streamsize>(colorSize))) {
+    if (auto colorBytes = reinterpret_cast<std::byte*>(&bodyColor[0]);
+        !in.read(reinterpret_cast<char*>(colorBytes), static_cast<std::streamsize>(colorSize))) {
         return false;
     }
     return true;
@@ -72,17 +72,17 @@ bool Car::readFromStream(std::fstream& in) {
 
 bool Car::writeToStream(std::fstream& out) const {
     size_t regNumberSize = regNumber.size();
-    const std::byte* regNumberSizeBytes = reinterpret_cast<const std::byte*>(&regNumberSize);
-    if (!out.write(reinterpret_cast<const char*>(regNumberSizeBytes), sizeof(regNumberSize))) return false;
-    const std::byte* regNumberBytes = reinterpret_cast<const std::byte*>(regNumber.c_str());
-    if (!out.write(reinterpret_cast<const char*>(regNumberBytes), static_cast<std::streamsize>(regNumberSize))) return false;
-    const std::byte* yearBytes = reinterpret_cast<const std::byte*>(&yearOfRelease);
-    if (!out.write(reinterpret_cast<const char*>(yearBytes), sizeof(yearOfRelease))) return false;
+    if (auto regNumberSizeBytes = reinterpret_cast<const std::byte*>(&regNumberSize);
+        !out.write(reinterpret_cast<const char*>(regNumberSizeBytes), sizeof(regNumberSize))) return false;
+    if (auto regNumberBytes = reinterpret_cast<const std::byte*>(regNumber.c_str());
+        !out.write(reinterpret_cast<const char*>(regNumberBytes), static_cast<std::streamsize>(regNumberSize))) return false;
+    if (auto yearBytes = reinterpret_cast<const std::byte*>(&yearOfRelease);
+        !out.write(reinterpret_cast<const char*>(yearBytes), sizeof(yearOfRelease))) return false;
     size_t colorSize = bodyColor.size();
-    const std::byte* colorSizeBytes = reinterpret_cast<const std::byte*>(&colorSize);
-    if (!out.write(reinterpret_cast<const char*>(colorSizeBytes), sizeof(colorSize))) return false;
-    const std::byte* colorBytes = reinterpret_cast<const std::byte*>(bodyColor.c_str());
-    if (!out.write(reinterpret_cast<const char*>(colorBytes), static_cast<std::streamsize>(colorSize))) return false;
+    if (auto colorSizeBytes = reinterpret_cast<const std::byte*>(&colorSize);
+        !out.write(reinterpret_cast<const char*>(colorSizeBytes), sizeof(colorSize))) return false;
+    if (auto colorBytes = reinterpret_cast<const std::byte*>(bodyColor.c_str());
+        !out.write(reinterpret_cast<const char*>(colorBytes), static_cast<std::streamsize>(colorSize))) return false;
     out.flush();
     return true;
 }
