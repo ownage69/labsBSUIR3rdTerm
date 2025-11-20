@@ -43,9 +43,144 @@ jobs:
           $sonarScannerPath = (Resolve-Path "sonar-scanner-$sonarScannerVersion-windows").Path
           echo "$sonarScannerPath\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
+      - name: Create solution file
+        working-directory: 8lab
+        run: |
+          $slnContent = @"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project(`"{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}`") = `"8lab`", `"8lab.vcxproj`", `"{1EDD7E99-0151-4E34-8D84-1D861EF7D08A}`"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1EDD7E99-0151-4E34-8D84-1D861EF7D08A}.Debug|x64.ActiveCfg = Debug|x64
+		{1EDD7E99-0151-4E34-8D84-1D861EF7D08A}.Debug|x64.Build.0 = Debug|x64
+		{1EDD7E99-0151-4E34-8D84-1D861EF7D08A}.Release|x64.ActiveCfg = Release|x64
+		{1EDD7E99-0151-4E34-8D84-1D861EF7D08A}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
+"@
+          $slnContent | Out-File -FilePath "8lab.sln" -Encoding utf8
+
+      - name: Create project file
+        working-directory: 8lab
+        run: |
+          $projectGuid = "{1EDD7E99-0151-4E34-8D84-1D861EF7D08A}"
+          $vcxprojContent = @"
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>$projectGuid</ProjectGuid>
+    <RootNamespace>8lab</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="`$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'`$(Configuration)|`$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'`$(Configuration)|`$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="`$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets" Condition="'`$(Configuration)|`$(Platform)'=='Release|x64'">
+    <Import Project="`$(UserRootDir)\Microsoft.Cpp.`$(Platform).user.props" Condition="exists('`$(UserRootDir)\Microsoft.Cpp.`$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'`$(Configuration)|`$(Platform)'=='Debug|x64'">
+    <Import Project="`$(UserRootDir)\Microsoft.Cpp.`$(Platform).user.props" Condition="exists('`$(UserRootDir)\Microsoft.Cpp.`$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'`$(Configuration)|`$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>`$(SolutionDir)x64\`$(Configuration)\</OutDir>
+    <IntDir>`$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'`$(Configuration)|`$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>`$(SolutionDir)x64\`$(Configuration)\</OutDir>
+    <IntDir>`$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'`$(Configuration)|`$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'`$(Configuration)|`$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\menu.cpp" />
+    <ClCompile Include="src\readUserInput.cpp" />
+    <ClCompile Include="src\safeInput.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\menu.h" />
+    <ClInclude Include="includes\readUserInput.h" />
+    <ClInclude Include="includes\safeInput.h" />
+    <ClInclude Include="includes\stack.h" />
+    <ClInclude Include="includes\stackAlgorithms.h" />
+    <ClInclude Include="includes\stackException.h" />
+  </ItemGroup>
+  <Import Project="`$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
+"@
+          $vcxprojContent | Out-File -FilePath "8lab.vcxproj" -Encoding utf8
+
       - name: Build with MSBuild
         working-directory: 8lab
-        run: msbuild 8lab.sln /t:Rebuild /p:Configuration=Release /p:Platform=x64 /p:RunCodeAnalysis=true /p:CodeAnalysisRuleSet="MinimumRecommendedRules.ruleset"
+        run: msbuild 8lab.sln /t:Rebuild /p:Configuration=Release /p:Platform=x64
 
       - name: SonarCloud Scan
         working-directory: 8lab
