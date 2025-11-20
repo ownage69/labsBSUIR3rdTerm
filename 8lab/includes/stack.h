@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <cstddef>
 #include <compare>
+#include <iterator>
 
 template <typename T>
 class Stack
@@ -82,9 +83,16 @@ class Stack
         StackNode *currentNode;
 
       public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = T;
+        using difference_type = std::ptrdiff_t;
+        using pointer = T*;
+        using reference = T&;
+
         explicit StackIterator(StackNode *node); 
 
         T &operator*() const;
+        T *operator->() const;
         StackIterator &operator++();
 
         friend bool operator==(const StackIterator &left, const StackIterator &right) = default;
@@ -237,6 +245,12 @@ template <typename T>
 T &Stack<T>::StackIterator::operator*() const
 {
     return currentNode->value;
+}
+
+template <typename T>
+T *Stack<T>::StackIterator::operator->() const
+{
+    return &(currentNode->value);
 }
 
 template <typename T>

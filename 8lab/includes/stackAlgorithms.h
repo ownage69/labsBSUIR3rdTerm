@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stack.h"
-#include <ranges>
+#include <algorithm>
 
 template <typename T>
 class StackAlgorithms
@@ -15,7 +15,7 @@ class StackAlgorithms
 template <typename T>
 bool StackAlgorithms<T>::findElement(const Stack<T> &stack, const T &value)
 {
-    return std::ranges::contains(stack, value);
+    return std::find(stack.begin(), stack.end(), value) != stack.end();
 }
 
 template <typename T>
