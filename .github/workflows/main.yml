@@ -20,14 +20,21 @@ jobs:
       - name: Set up MSBuild
         uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce
 
-      - name: Build with MSBuild
-        run: msbuild labsBSUIR3rdTerm.sln /t:Rebuild /p:Configuration=Release
-
-      - name: SonarCloud Scan
+      - name: SonarCloud Prepare Analysis
         uses: SonarSource/sonarcloud-github-action@e44258b109568baa0df60ed515909fc6c72cba92
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
             -Dsonar.projectKey=ownage69_labsBSUIR3rdTerm
             -Dsonar.organization=ownage69
+
+      - name: Build with MSBuild
+        run: msbuild 8lab/8lab.sln /t:Rebuild /p:Configuration=Release /p:Platform=x64
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@e44258b109568baa0df60ed515909fc6c72cba92
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
