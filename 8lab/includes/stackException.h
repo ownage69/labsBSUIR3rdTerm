@@ -9,4 +9,3 @@ public:
     StackException() : std::runtime_error("Stack is empty") {}
     explicit StackException(const std::string& message) : std::runtime_error(message) {}
 };
-

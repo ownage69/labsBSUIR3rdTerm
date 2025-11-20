@@ -8,4 +8,3 @@ std::string readUserInput<std::string>(const std::string &prompt)
     std::getline(std::cin, inputValue);
     return inputValue;
 }
-

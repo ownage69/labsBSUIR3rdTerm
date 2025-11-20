@@ -291,4 +291,3 @@ typename Stack<T>::StackIterator Stack<T>::end() const
 {
     return StackIterator(nullptr);
 }
-

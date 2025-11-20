@@ -87,4 +87,3 @@ void StackAlgorithms<T>::reverseStack(Stack<T> &stack)
 
     stack = temporaryStack;
 }
-

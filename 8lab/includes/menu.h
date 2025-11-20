@@ -189,4 +189,3 @@ void Menu::handleReverseOperation(Stack<T> &stack) const
         stack.print();
     }
 }
-

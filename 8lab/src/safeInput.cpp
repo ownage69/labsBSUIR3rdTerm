@@ -65,4 +65,3 @@ int safePositiveInputInt(const std::string &prompt)
         cout << "Number must be positive\n";
     }
 }
-
