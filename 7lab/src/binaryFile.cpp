@@ -9,12 +9,12 @@ BinaryFile::~BinaryFile() {
     close();
 }
 
-bool BinaryFile::open(bool truncate) {
+bool BinaryFile::open(bool clearFile) {
     if (fileStream.is_open()) {
         close();
     }
     std::ios_base::openmode mode = std::ios::binary | std::ios::in | std::ios::out;
-    if (truncate) {
+    if (clearFile) {
         mode |= std::ios::trunc;
     }
     fileStream.open(fileName, mode);
